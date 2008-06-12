@@ -44,7 +44,12 @@ public class BlueTurret extends Turret implements TurretBehaviour {
 	}
 
 	public void shoot() {
-		Bullet bullet = new BlueBullet();
+		
+	}
+
+	@Override
+	public void moveTo(int x, int y) {
+		// TODO Auto-generated method stub
 		
 	}
 

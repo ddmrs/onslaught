@@ -20,8 +20,7 @@ public class StraightRoad {
 		
 	}
 	
-	private 
-	
+
 	public void draw(Graphics graphics){
 		graphics.setColor(BACKGROUNDCOLOR);
 		switch(direction){
