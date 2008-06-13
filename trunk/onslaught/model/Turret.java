@@ -3,28 +3,25 @@ package onslaught.model;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
+import java.awt.geom.Point2D;
 
-public abstract class Turret implements TurretBehaviour{
-	protected Point position;
-	
+public abstract class Turret extends Sprite implements TurretBehaviour {
+
 	protected int width;
 	protected int height;
-	
+
 	private int damage;
 	private int range;
 	private int rate;
 	private int direction; // degrees
 	private int shotsFired;
-	public Turret(int x, int y)
-	{
-		position = new Point(x, y);
+
+	public Turret(int x, int y) {
+		super(new Animation());
+		setPosition(new Point2D.Float(x, y));
 	}
-	public Turret() {
-		// Testdata
-		position = new Point(10, 10);
-		width = 30;
-		height = 40;
+	public double getDistance(Enemy target){
+		return getPosition().distance(target.getPosition());
 	}
-	public abstract void draw(Graphics g);
-	
+	public abstract Bullet shoot(Enemy target);
 }

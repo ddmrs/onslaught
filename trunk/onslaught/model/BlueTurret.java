@@ -2,53 +2,61 @@ package onslaught.model;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.logging.Logger;
 
-public class BlueTurret extends Turret implements TurretBehaviour {
-	private final int WIDTH = 30;
-	private final int HEIGHT = 30;
+import javax.swing.ImageIcon;
+
+public class BlueTurret extends Turret {
+
+	private TurretBehaviour turretBehaviour;
 	
 	public BlueTurret(int x, int y) {
 		super(x, y);
-		this.width = WIDTH;
-		this.height = HEIGHT;
+
+		getAnimation().addFrame(new ImageIcon("resources/images/turret-blue.png").getImage(), 1);
+		getAnimation().start();
+	}
+	public void moveTo(int x, int y) {
+		// TODO Auto-generated method stub
+		
 	}
 
-	public void shoot(Enemy ememy) {
+	public Bullet shoot(Enemy target) {
+		Bullet bullet = new BlueBullet(target, getPosition());
+		double steps = getDistance(target)/bullet.getSpeed();
+		bullet.setDx((float)((target.getPosition().x - getPosition().x)/steps));
+		bullet.setDy((float)((target.getPosition().y - getPosition().y)/steps));
+		//System.out.println("Steps : " + steps);
+		//System.out.println("speed : " + getSpeed());
+		//System.out.println("target.getPosition().x - getPosition().x : " + bullet.getDx());
+		//System.out.println("target.getPosition().y - getPosition().y : " + bullet.getDy());
+		//System.out.println("DX : " + Math.round((target.getPosition().x - getPosition().x)/steps));
+		//System.out.println("DY : " + Math.round((target.getPosition().y - getPosition().y)/steps));
 		
+		return bullet;
 	}
 
 	public void turn(int degrees) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	public void upgradeDamage() {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	public void upgradeRange() {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	public void upgradeRate() {
 		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void draw(Graphics g) {
-		g.setColor(Color.BLUE);
-		g.fillOval(position.x,position.y, width,height);
-	}
-
-	public void shoot() {
 		
 	}
 
-	@Override
-	public void moveTo(int x, int y) {
+	public void shoot() {
 		// TODO Auto-generated method stub
 		
 	}
