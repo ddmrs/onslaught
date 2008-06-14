@@ -1,5 +1,8 @@
-package onslaught.model;
+package onslaught.model.turret;
 
+import onslaught.model.*;
+import onslaught.model.enemy.Enemy;
+import onslaught.model.bullet.Bullet;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
@@ -57,4 +60,7 @@ public abstract class Turret extends Sprite
         return range;
     }
    
+    public double getDistance(Enemy enemy, Bullet bullet) {
+        return enemy.getPosition().distance(bullet.getPosition());
+    }
 }

@@ -1,8 +1,9 @@
 /**
  * TODO:
  */
-package onslaught.model;
+package onslaught.model.enemy;
 
+import onslaught.model.enemy.Enemy;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.geom.Point2D;

@@ -1,5 +1,6 @@
-package onslaught.model;
+package onslaught.model.enemy;
 
+import onslaught.model.*;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -10,27 +11,28 @@ public abstract class Enemy extends Sprite
 {
     private int health = 100;
     private int hitpoints;
+    private int maxHitpoints;
     private int level;
 
     public Enemy(Point2D.Float position, int level) {
         super(position);
         this.level = level;
-        hitpoints = health * level;
+        maxHitpoints = (health * level/10);
+        hitpoints = maxHitpoints;
         setVelocityX(0.5f);
         setVelocityY(0);
     }
     
     public void takeHit(int damage){
         hitpoints -= damage;
-        health = Math.round((hitpoints/damage));
-        System.out.println("damage: " + damage);
-        System.out.println("hitpoints: " + hitpoints);
-        System.out.println(hitpoints/damage);
+        // cast int's to double to avoid loss of precision
+        health = (int)Math.round(((double)hitpoints/(double)maxHitpoints) * 100);
     }
     
     public boolean isAlive(){
         return (hitpoints > 0);
     }
+    
     @Override
     public void draw(Graphics g){
         super.draw(g);

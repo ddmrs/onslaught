@@ -1,5 +1,7 @@
-package onslaught.model;
+package onslaught.model.bullet;
 
+import onslaught.model.enemy.Enemy;
+import onslaught.model.*;
 import java.awt.geom.Point2D;
 
 public abstract class Bullet extends Sprite

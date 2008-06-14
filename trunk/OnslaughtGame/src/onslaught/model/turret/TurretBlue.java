@@ -1,13 +1,16 @@
-package onslaught.model;
+package onslaught.model.turret;
 
+import onslaught.model.enemy.Enemy;
+import onslaught.model.bullet.BulletBlue;
+import onslaught.model.bullet.Bullet;
 import java.awt.geom.Point2D;
 import javax.swing.ImageIcon;
 
 public class TurretBlue extends Turret
 {
-
-    private static final int WIDTH = 30;
-    private static final int HEIGHT = 30;
+    //TODO: All rates upgradable fields are static now
+    // these fields have to be a base that can be multiplied by a factor of upgrde
+    
     private static final int RATE = 2; //This turret shoots 2 times per second
     private static final int RANGE = 50;//TODO: currently pixel dependent
     
@@ -65,7 +68,4 @@ public class TurretBlue extends Turret
         return bullet;
     }
 
-    public double getDistance(Enemy enemy, Bullet bullet) {
-        return enemy.getPosition().distance(bullet.getPosition());
-    }
 }

@@ -1,5 +1,10 @@
 package onslaught.gui;
 
+import onslaught.model.turret.TurretBlue;
+import onslaught.model.turret.Turret;
+import onslaught.model.enemy.EnemyPrinter;
+import onslaught.model.enemy.Enemy;
+import onslaught.model.bullet.Bullet;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -15,6 +20,7 @@ import java.util.List;
 import javax.swing.JPanel;
 
 import onslaught.model.*;
+import onslaught.model.turret.TurretRed;
 
 public class Zone extends JPanel implements Runnable
 {
@@ -79,7 +85,8 @@ public class Zone extends JPanel implements Runnable
             animator = new Thread(this);
             animator.start();
             sendNextWave(0L);
-            addTurret(turretPosition);
+            addTurret(new TurretBlue(turretPosition));
+            //addTurret(new TurretRed(new Point2D.Float(450,200)));
         }
     }
 
@@ -244,13 +251,12 @@ public class Zone extends JPanel implements Runnable
     // Game functions --------------------------------------------------------//
     public void sendNextWave(long currentTime) {
         Point2D.Float startPosition = new Point2D.Float(20, 100);
-        Enemy enemy = new EnemyPrinter(startPosition, level);
-        enemies.add(enemy);
+            Enemy enemy = new EnemyPrinter(new Point2D.Float(startPosition.x, startPosition.y), level);
+            enemies.add(enemy);
         level++;
     }
     
-    public void addTurret(Point2D.Float position){
-        Turret turret = new TurretBlue(position);
+    public void addTurret(Turret turret){
         turrets.add(turret);
     }
 }
