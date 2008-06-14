@@ -9,8 +9,9 @@ public class TurretBlue extends Turret
 
     private static final int WIDTH = 30;
     private static final int HEIGHT = 30;
-    private static final int RATE = 2;
+    private static final int RATE = 2; //This turret shoots 2 times per second
     private static final int RANGE = 50;//TODO: currently pixel dependent
+    
     public TurretBlue(Point2D.Float position) {
         super(position, RATE, RANGE);
 
