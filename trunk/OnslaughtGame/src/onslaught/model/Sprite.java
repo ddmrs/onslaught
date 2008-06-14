@@ -71,8 +71,7 @@ public class Sprite {
         current image.
     */
     public int getWidth() {
-        //return animation.getImage().getWidth(null);
-        return 0;
+        return animation.getImage().getWidth(null);
     }
 
     /**
@@ -80,8 +79,7 @@ public class Sprite {
         current image.
     */
     public int getHeight() {
-        //return animation.getImage().getHeight(null);
-        return 0;
+        return animation.getImage().getHeight(null);
     }
 
     /**

@@ -6,6 +6,7 @@ package onslaught.model;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.geom.Point2D;
+import javax.swing.ImageIcon;
 
 /**
  *
@@ -19,23 +20,7 @@ public class EnemyPrinter extends Enemy
 
     public EnemyPrinter(Point2D.Float position, int level) {
         super(position, level);
-    }
-
-    @Override
-    public void draw(Graphics g) {
-        if(isAlive()) {//only draw when alive
-            g.setColor(Color.WHITE);
-            g.fillRect(Math.round(getPosition().x), Math.round(getPosition().y), WIDTH, HEIGHT);
-        }
-    }
-
-    @Override
-    public int getWidth() {
-        return WIDTH;
-    }
-
-    @Override
-    public int getHeight() {
-        return HEIGHT;
+        getAnimation().addFrame(new ImageIcon("resources/images/enemy-printer.png").getImage(), 1);
+	getAnimation().start();
     }
 }

@@ -7,13 +7,12 @@ import java.awt.geom.Point2D;
 public class BulletBlue extends Bullet
 {
     
-    private int speed;
+    private final static int SPEED = 5;
     private final static int WIDTH = 8;
     private final static int HEIGHT = 8;
 
     public BulletBlue(Point2D.Float position, Enemy target) {
         super(position, target);
-        speed = 5;
         setDamage(50);
     }
 
@@ -33,6 +32,6 @@ public class BulletBlue extends Bullet
     }    
 
     public int getSpeed() {
-        return speed;
+        return SPEED;
     }
 }

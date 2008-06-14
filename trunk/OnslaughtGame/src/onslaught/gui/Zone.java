@@ -246,6 +246,7 @@ public class Zone extends JPanel implements Runnable
         Point2D.Float startPosition = new Point2D.Float(20, 100);
         Enemy enemy = new EnemyPrinter(startPosition, level);
         enemies.add(enemy);
+        level++;
     }
     
     public void addTurret(Point2D.Float position){
