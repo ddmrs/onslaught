@@ -24,6 +24,7 @@ public abstract class Enemy extends Sprite
         hitpoints -= damage;
         health = Math.round((hitpoints/damage));
         System.out.println("damage: " + damage);
+        System.out.println("hitpoints: " + hitpoints);
         System.out.println(hitpoints/damage);
     }
     
