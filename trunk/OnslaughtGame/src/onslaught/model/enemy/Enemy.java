@@ -19,7 +19,7 @@ public abstract class Enemy extends Sprite
         this.level = level;
         maxHitpoints = (health * level/10);
         hitpoints = maxHitpoints;
-        setVelocityX(0.0f);
+        setVelocityX(0.2f);
         setVelocityY(0);
     }
     
@@ -38,7 +38,7 @@ public abstract class Enemy extends Sprite
         super.draw(g);
         g.setFont(new Font("verdana", 0,10));
         g.setColor(new Color(0,0,0));
-        g.drawString(String.valueOf(health), Math.round(getPosition().x), Math.round((float)getPosition().y));
+        g.drawString(String.valueOf(health), Math.round(getPosition().x), Math.round(getPosition().y));
         
     }
 }

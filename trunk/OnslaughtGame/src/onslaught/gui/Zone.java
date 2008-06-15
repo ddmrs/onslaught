@@ -34,7 +34,7 @@ public class Zone extends JPanel implements Runnable
     private final int PHEIGHT = 520;
     private final int PWIDTH = 800;
     private final Color BACKGROUNDCOLOR = new Color(247, 207, 172);
-    private final int FPS = 40; // milliseconds
+    private final int FPS = 80; // milliseconds
         /* Number of frames with a delay of 0 ms before the animation thread yields
     to other running threads. */
     private final int NO_DELAYS_PER_YIELD = 16;
@@ -53,7 +53,6 @@ public class Zone extends JPanel implements Runnable
     private long timeBetweenEnemies;
     private long waveTime;
     private long periodBetweenFrames;
-    private Point2D.Float turretPosition = new Point2D.Float(450,35);
 
     public Zone() {
         periodBetweenFrames = (long) 1000.0 / FPS;
@@ -85,8 +84,22 @@ public class Zone extends JPanel implements Runnable
             animator = new Thread(this);
             animator.start();
             sendNextWave(0L);
-            addTurret(new TurretBlue(turretPosition));
-            //addTurret(new TurretRed(new Point2D.Float(450,200)));
+            
+            addTurret(new TurretBlue(new Point2D.Float(100, 150)));
+            addTurret(new TurretBlue(new Point2D.Float(200, 150)));
+            addTurret(new TurretBlue(new Point2D.Float(300, 150)));
+            addTurret(new TurretBlue(new Point2D.Float(400, 150)));
+            addTurret(new TurretBlue(new Point2D.Float(500, 150)));
+            addTurret(new TurretBlue(new Point2D.Float(600, 150)));
+            addTurret(new TurretBlue(new Point2D.Float(700, 150)));
+            
+            addTurret(new TurretBlue(new Point2D.Float( 50, 450)));
+            addTurret(new TurretBlue(new Point2D.Float(150, 450)));
+            addTurret(new TurretBlue(new Point2D.Float(250, 450)));
+            addTurret(new TurretBlue(new Point2D.Float(350, 450)));
+            addTurret(new TurretBlue(new Point2D.Float(450, 450)));
+            addTurret(new TurretBlue(new Point2D.Float(550, 450)));
+            addTurret(new TurretBlue(new Point2D.Float(550, 450)));      
         }
     }
 
@@ -240,6 +253,7 @@ public class Zone extends JPanel implements Runnable
 
         for(Enemy enemy : enemies) {
             if(enemy.getCollisionBox().intersects(rangeBox)) {
+                turret.targetEnemy(enemy);
                 Bullet bullet = turret.shoot(enemy, System.nanoTime());
                 if(bullet != null) {
                     bullets.add(bullet);
@@ -250,9 +264,10 @@ public class Zone extends JPanel implements Runnable
 
     // Game functions --------------------------------------------------------//
     public void sendNextWave(long currentTime) {
-        Point2D.Float startPosition = new Point2D.Float(20, 100);
-            Enemy enemy = new EnemyPrinter(new Point2D.Float(startPosition.x, startPosition.y), level);
-            enemies.add(enemy);
+        Point2D.Float startPosition = new Point2D.Float(1, 300);
+        
+        Enemy enemy = new EnemyPrinter(new Point2D.Float(startPosition.x, startPosition.y), level);
+        enemies.add(enemy);
         level++;
     }
     

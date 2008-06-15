@@ -154,7 +154,7 @@ public class Sprite {
         return new Rectangle(Math.round(position.x), Math.round(position.y), getWidth(), getHeight());
     }
     
-    public double getDistance(Sprite first, Sprite second) {
+    public static double getDistance(Sprite first, Sprite second) {
         return first.getMiddlePoint().distance(second.getMiddlePoint());
     }
 }
