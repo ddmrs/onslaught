@@ -19,7 +19,7 @@ public abstract class Enemy extends Sprite
         this.level = level;
         maxHitpoints = (health * level/10);
         hitpoints = maxHitpoints;
-        setVelocityX(0.5f);
+        setVelocityX(0.0f);
         setVelocityY(0);
     }
     

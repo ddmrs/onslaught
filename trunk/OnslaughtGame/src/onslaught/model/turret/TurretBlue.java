@@ -12,7 +12,7 @@ public class TurretBlue extends Turret
     // these fields have to be a base that can be multiplied by a factor of upgrde
     
     private static final int RATE = 2; //This turret shoots 2 times per second
-    private static final int RANGE = 50;//TODO: currently pixel dependent
+    private static final int RANGE = 5000;//TODO: currently pixel dependent
     
     public TurretBlue(Point2D.Float position) {
         super(position, RATE, RANGE);
@@ -57,12 +57,6 @@ public class TurretBlue extends Turret
         }
 
         BulletBlue bullet = new BulletBlue(getMiddlePoint(), enemy);
-
-        float xDist = enemy.getPosition().x - bullet.getMiddlePoint().x;
-        float yDist = enemy.getPosition().y - bullet.getMiddlePoint().y;
-        float steps = (float) (getDistance(enemy, bullet)) / bullet.getSpeed();
-        bullet.setVelocityX(xDist / steps);
-        bullet.setVelocityY(yDist / steps);
 
         setTimeLastShot(currentTime);
         return bullet;

@@ -153,4 +153,8 @@ public class Sprite {
     public Rectangle2D getCollisionBox(){
         return new Rectangle(Math.round(position.x), Math.round(position.y), getWidth(), getHeight());
     }
+    
+    public double getDistance(Sprite first, Sprite second) {
+        return first.getMiddlePoint().distance(second.getMiddlePoint());
+    }
 }
