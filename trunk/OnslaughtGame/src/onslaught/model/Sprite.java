@@ -146,8 +146,8 @@ public class Sprite {
         return position;
     }
     
-    public Point2D.Float getMiddlePoint(){
-        return new Point2D.Float((position.x + getWidth()/2), (position.y + getHeight())/2);
+    public Point2D.Float getMiddlePoint(){       
+        return new Point2D.Float(position.x + getWidth()/2, position.y + getHeight()/2);
     }
     
     public Rectangle2D getCollisionBox(){
