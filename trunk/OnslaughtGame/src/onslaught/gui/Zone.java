@@ -53,6 +53,7 @@ public class Zone extends JPanel implements Runnable
     private long timeBetweenEnemies;
     private long waveTime;
     private long periodBetweenFrames;
+    private int killCount = 0;
 
     public Zone() {
         periodBetweenFrames = (long) 1000.0 / FPS;
@@ -227,18 +228,18 @@ public class Zone extends JPanel implements Runnable
      * 
      */
     private void checkEnemiesHealth() {
-        boolean killedOne = false;
+        
         Iterator<Enemy> it = enemies.iterator();
         while(it.hasNext()) {
             Enemy sprite = it.next();
             if(!sprite.isAlive()) {
                 it.remove();
-                killedOne = true;
+                killCount++;
             }
         }
-        if(killedOne){
+        if(killCount == 10){
             sendNextWave(currentTime);
-            killedOne = false;
+            killCount = 0;
         }
     }
 
@@ -254,9 +255,10 @@ public class Zone extends JPanel implements Runnable
         for(Enemy enemy : enemies) {
             if(enemy.getCollisionBox().intersects(rangeBox)) {
                 turret.targetEnemy(enemy);
-                Bullet bullet = turret.shoot(enemy, System.nanoTime());
-                if(bullet != null) {
-                    bullets.add(bullet);
+                
+                if(turret.isAbleToShoot(currentTime)){
+                    bullets.add(turret.shoot());
+                    turret.setTimeLastShot(currentTime);
                 }
             }
         }
@@ -265,9 +267,10 @@ public class Zone extends JPanel implements Runnable
     // Game functions --------------------------------------------------------//
     public void sendNextWave(long currentTime) {
         Point2D.Float startPosition = new Point2D.Float(1, 300);
-        
-        Enemy enemy = new EnemyPrinter(new Point2D.Float(startPosition.x, startPosition.y), level);
-        enemies.add(enemy);
+        for(int i = 0; i<10; i++){
+           Enemy enemy = new EnemyPrinter(new Point2D.Float(startPosition.x-i*30, startPosition.y), level);
+           enemies.add(enemy); 
+        } 
         level++;
     }
     

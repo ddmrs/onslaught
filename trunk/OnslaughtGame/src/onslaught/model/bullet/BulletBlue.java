@@ -6,7 +6,7 @@ import onslaught.model.enemy.*;
 
 public class BulletBlue extends Bullet
 {
-    private final static int SPEED = 2;
+    private final static float SPEED = 0.3f;
 
     public BulletBlue(Point2D.Float position, Enemy target) {
         super(position, target, SPEED);

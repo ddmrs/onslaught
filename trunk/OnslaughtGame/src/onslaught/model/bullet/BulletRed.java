@@ -14,7 +14,7 @@ import onslaught.model.enemy.Enemy;
  * @author Jelle Victoor
  */
 public class BulletRed extends Bullet{
-    private final static int SPEED = 2;
+    private final static float SPEED = 0.3f;
 
     public BulletRed(Point2D.Float position, Enemy target) {
         super(position, target, SPEED);

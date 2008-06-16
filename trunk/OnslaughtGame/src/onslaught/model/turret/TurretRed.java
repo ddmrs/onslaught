@@ -27,22 +27,10 @@ public class TurretRed extends Turret{
         getAnimation().addFrame(new ImageIcon("resources/images/turret-red.png").getImage(), 1);
 	getAnimation().start();
     }
+    
     @Override
-    public Bullet shoot(Enemy enemy, long currentTime) {
-        if(!isAbleToShoot(currentTime)) {
-            return null;
-        }
-
-        BulletRed bullet = new BulletRed(getMiddlePoint(), enemy);
-
-        float xDist = enemy.getPosition().x - bullet.getMiddlePoint().x;
-        float yDist = enemy.getPosition().y - bullet.getMiddlePoint().y;
-        float steps = (float) (getDistance(enemy, bullet)) / bullet.getSpeed();
-        bullet.setVelocityX(xDist / steps);
-        bullet.setVelocityY(yDist / steps);
-
-        setTimeLastShot(currentTime);
-        return bullet;
+    public Bullet shoot() {
+        return new BulletRed(getMiddlePoint(), getTarget());
     }
     
 }

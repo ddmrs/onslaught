@@ -27,6 +27,7 @@ public abstract class Turret extends Sprite
     private int shotsFired;
     private long timeLastShot;
     private long reloadTime;
+    private Enemy target;
 
     public Turret(Point2D.Float position, int rate, int range) {
         super(position);
@@ -44,7 +45,7 @@ public abstract class Turret extends Sprite
         reloadTime *= 1000000L;    // ms --> nanosecs 
     }
     
-    abstract public Bullet shoot(Enemy enemy, long time);
+    abstract public Bullet shoot();
     
     public Rectangle2D getRangeBox(){
         Ellipse2D.Float ellipse = new Ellipse2D.Float(getPosition().x - getRange(), getPosition().y - getRange(), getWidth() + getRange()*2, getHeight() + getRange()*2);
@@ -100,6 +101,8 @@ public abstract class Turret extends Sprite
         //to new angle
         affineTransform.rotate(newShootAngle, getWidth()/2, getWidth()/2);
         oldShootAngle = newShootAngle;
+        //set Target
+        this.setTarget(target);
     }
     
     @Override
@@ -114,5 +117,15 @@ public abstract class Turret extends Sprite
 
     public void setEnemyInRange(boolean enemyInRange) {
         this.enemyInRange = enemyInRange;
+    }
+
+    public Enemy getTarget()
+    {
+        return target;
+    }
+
+    public void setTarget(Enemy target)
+    {
+        this.target = target;
     }
 }

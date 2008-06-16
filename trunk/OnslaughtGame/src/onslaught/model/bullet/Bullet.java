@@ -8,9 +8,9 @@ public abstract class Bullet extends Sprite
 {
     private int damage;
     private Enemy target;
-    private int speed;
+    private float speed;
 
-    public Bullet(Point2D.Float position, Enemy target, int speed) {
+    public Bullet(Point2D.Float position, Enemy target, float speed) {
         super(position);
         this.speed = speed;
         this.target = target;
@@ -22,6 +22,12 @@ public abstract class Bullet extends Sprite
         float steps = (float) (getDistance(target, this)) / getSpeed();
         setVelocityX(xDist / steps);
         setVelocityY(yDist / steps);        
+    }
+    
+    @Override
+    public void update(long currentTime){
+        calcVelocities();
+        super.update(currentTime);
     }
 
     public void setDamage(int damage) {
@@ -36,11 +42,11 @@ public abstract class Bullet extends Sprite
         return target;
     }
 
-    public int getSpeed() {
+    public float getSpeed() {
         return speed;
     }
 
-    public void setSpeed(int speed) {
+    public void setSpeed(float speed) {
         this.speed = speed;
     }
 }

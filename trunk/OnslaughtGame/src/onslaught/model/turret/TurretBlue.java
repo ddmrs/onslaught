@@ -21,26 +21,6 @@ public class TurretBlue extends Turret
 	getAnimation().start();
     }
 
-    public void turn(int degrees) {
-    // TODO Auto-generated method stub
-
-    }
-
-    public void upgradeDamage() {
-    // TODO Auto-generated method stub
-
-    }
-
-    public void upgradeRange() {
-    // TODO Auto-generated method stub
-
-    }
-
-    public void upgradeRate() {
-    // TODO Auto-generated method stub
-
-    }
-
     @Override
     public void draw(Graphics g) {
 //        g.setColor(Color.BLUE);
@@ -53,12 +33,8 @@ public class TurretBlue extends Turret
     }
 
     @Override
-    public Bullet shoot(Enemy enemy, long currentTime) {
-        if(!isAbleToShoot(currentTime)) {
-            return null;
-        }
-        setTimeLastShot(currentTime);
-        return  new BulletBlue(getMiddlePoint(), enemy);
+    public Bullet shoot() {
+        return  new BulletBlue(getMiddlePoint(), getTarget());
     }
 
 }
