@@ -43,6 +43,7 @@ public class Zone extends JPanel implements Runnable
     private final int MAX_FRAME_SKIPS = 5;   // was 2;
 
     //lists
+    private List<Sprite> sprites;
     private List<Turret> turrets;
     private List<Enemy> enemies;
     private List<Bullet> bullets;
@@ -53,7 +54,12 @@ public class Zone extends JPanel implements Runnable
     private long timeBetweenEnemies;
     private long waveTime;
     private long periodBetweenFrames;
-    private int killCount = 0;
+    private int enemyCount;//counts how many enemies are on screen
+    //timevars
+    private long currentTime,  oldTime,  timeDifference,  sleepTime;
+    private long overSleepTime = 0L;
+    private int noDelays = 0;
+    private long excess = 0L;    
 
     public Zone() {
         periodBetweenFrames = (long) 1000.0 / FPS;
@@ -72,7 +78,9 @@ public class Zone extends JPanel implements Runnable
         //setDefaults
         proceed = true;
         level = 1;
+        enemyCount = 0;
         //initialise lists
+        sprites = new ArrayList<Sprite>();
         turrets = new ArrayList<Turret>();
         enemies = new ArrayList<Enemy>();
         bullets = new ArrayList<Bullet>();
@@ -84,23 +92,23 @@ public class Zone extends JPanel implements Runnable
             initComponents();
             animator = new Thread(this);
             animator.start();
-            sendNextWave(0L);
+            sendNextWave();
             
-            addTurret(new TurretBlue(new Point2D.Float(100, 150)));
-            addTurret(new TurretBlue(new Point2D.Float(200, 150)));
-            addTurret(new TurretBlue(new Point2D.Float(300, 150)));
-            addTurret(new TurretBlue(new Point2D.Float(400, 150)));
-            addTurret(new TurretBlue(new Point2D.Float(500, 150)));
-            addTurret(new TurretBlue(new Point2D.Float(600, 150)));
-            addTurret(new TurretBlue(new Point2D.Float(700, 150)));
+            addTurret(new TurretBlue(new Point2D.Float(100, 150),this, enemies));
+            addTurret(new TurretBlue(new Point2D.Float(200, 150),this, enemies));
+            addTurret(new TurretBlue(new Point2D.Float(300, 150),this, enemies));
+            addTurret(new TurretBlue(new Point2D.Float(400, 150),this, enemies));
+            addTurret(new TurretBlue(new Point2D.Float(500, 150),this, enemies));
+            addTurret(new TurretBlue(new Point2D.Float(600, 150),this, enemies));
+            addTurret(new TurretBlue(new Point2D.Float(700, 150),this, enemies));
             
-            addTurret(new TurretBlue(new Point2D.Float( 50, 450)));
-            addTurret(new TurretBlue(new Point2D.Float(150, 450)));
-            addTurret(new TurretBlue(new Point2D.Float(250, 450)));
-            addTurret(new TurretBlue(new Point2D.Float(350, 450)));
-            addTurret(new TurretBlue(new Point2D.Float(450, 450)));
-            addTurret(new TurretBlue(new Point2D.Float(550, 450)));
-            addTurret(new TurretBlue(new Point2D.Float(550, 450)));      
+            addTurret(new TurretBlue(new Point2D.Float( 50, 450),this, enemies));
+            addTurret(new TurretBlue(new Point2D.Float(150, 450),this, enemies));
+            addTurret(new TurretBlue(new Point2D.Float(250, 450),this, enemies));
+            addTurret(new TurretBlue(new Point2D.Float(350, 450),this, enemies));
+            addTurret(new TurretBlue(new Point2D.Float(450, 450),this, enemies));
+            addTurret(new TurretBlue(new Point2D.Float(550, 450),this, enemies));
+            addTurret(new TurretBlue(new Point2D.Float(550, 450),this, enemies));      
         }
     }
 
@@ -122,24 +130,38 @@ public class Zone extends JPanel implements Runnable
     }
 
     public void update() {
-        //first update enemies, so new location will be known to turrets
-        for(Sprite sprite : enemies) {
-            sprite.update(0L);
+//        //first update enemies, so new location will be known to turrets
+//        for(Sprite sprite : enemies) {
+//            sprite.update(currentTime);
+//        }
+//        //afterwards update turrets, which should have new angle to shoot and fire new bullets
+//        for(Sprite sprite : turrets) {
+//            sprite.update(currentTime);
+//        }
+//        //finally update all bullets, including newly fired ones
+//        for(Sprite sprite : bullets) {
+//            sprite.update(currentTime);
+//        }
+        Iterator<Sprite> it = sprites.iterator();
+        while(it.hasNext()){
+            Sprite s = it.next();
+            if(s.isAlive()){
+                s.update(currentTime);
+            }
+            else{
+                if(s instanceof Enemy){
+                    enemyCount++;
+                }
+                it.remove();
+            }
         }
-        //then check for enemies entering turrets range
-        checkAllTurrets();
-        //afterwards update turrets, which should have new angle to shoot and fire new bullets
-        for(Sprite sprite : turrets) {
-            sprite.update(0L);
+        sprites.addAll(bullets);
+        bullets.clear();
+        
+        if(enemyCount >= 10){
+            sendNextWave();
+            enemyCount = 0;
         }
-        //finally update all bullets, including newly fired ones
-        for(Sprite sprite : bullets) {
-            sprite.update(0L);
-        }
-        //check if bullets hit an enemy
-        checkBulletCollision();
-        //check if any enemy died
-        checkEnemiesHealth();
     }
 
     public void buffer() {
@@ -148,13 +170,16 @@ public class Zone extends JPanel implements Runnable
         bufferGraphics.fillRect(0, 0, PWIDTH, PHEIGHT);
 
         // Draw game objects
-        for(Sprite sprite : turrets) {
-            sprite.draw(bufferGraphics);
-        }
-        for(Sprite sprite : enemies) {
-            sprite.draw(bufferGraphics);
-        }
-        for(Sprite sprite : bullets) {
+//        for(Sprite sprite : turrets) {
+//            sprite.draw(bufferGraphics);
+//        }
+//        for(Sprite sprite : enemies) {
+//            sprite.draw(bufferGraphics);
+//        }
+//        for(Sprite sprite : bullets) {
+//            sprite.draw(bufferGraphics);
+//        }
+        for(Sprite sprite : sprites) {
             sprite.draw(bufferGraphics);
         }
     }
@@ -162,11 +187,6 @@ public class Zone extends JPanel implements Runnable
     public void paint() {
         graphics.drawImage(image, 0, 0, this);
     }
-    
-    private long currentTime,  oldTime,  timeDifference,  sleepTime;
-    private long overSleepTime = 0L;
-    private int noDelays = 0;
-    private long excess = 0L;
 
     public void sleep() {
         currentTime = System.nanoTime();
@@ -205,76 +225,35 @@ public class Zone extends JPanel implements Runnable
     }
 
     // Game checks -----------------------------------------------------------//
-    /**
-     * TODO: update method to be appropriate for each type of bullet 
-     */
-    private void checkBulletCollision() {
-        Iterator<Bullet> it = bullets.iterator();
-        while(it.hasNext()) {
-            Bullet sprite = it.next();
-            if(isCollided(sprite, sprite.getTarget())) {
-                sprite.getTarget().takeHit(sprite.getDamage());
-                it.remove();
-            }
-        }
-    }
-
-    private boolean isCollided(Sprite spriteOne, Sprite spriteTwo) {
-        return spriteOne.getCollisionBox().intersects(spriteTwo.getCollisionBox());
-    }
-
-    /**
-     * Perform a cleanup method to remove all dead enemies from screen
-     * 
-     */
-    private void checkEnemiesHealth() {
-        
-        Iterator<Enemy> it = enemies.iterator();
-        while(it.hasNext()) {
-            Enemy sprite = it.next();
-            if(!sprite.isAlive()) {
-                it.remove();
-                killCount++;
-            }
-        }
-        if(killCount == 10){
-            sendNextWave(currentTime);
-            killCount = 0;
-        }
-    }
-
-    private void checkAllTurrets() {
-        for(Turret turret : turrets) {
-            checkEnemyInRange(turret);
-        }
-    }
-
-    private void checkEnemyInRange(Turret turret) {
-        Rectangle2D rangeBox = turret.getRangeBox();
-
-        for(Enemy enemy : enemies) {
-            if(enemy.getCollisionBox().intersects(rangeBox)) {
-                turret.targetEnemy(enemy);
-                
-                if(turret.isAbleToShoot(currentTime)){
-                    bullets.add(turret.shoot());
-                    turret.setTimeLastShot(currentTime);
-                }
-            }
-        }
-    }
 
     // Game functions --------------------------------------------------------//
-    public void sendNextWave(long currentTime) {
+    public void sendNextWave() {
         Point2D.Float startPosition = new Point2D.Float(1, 300);
         for(int i = 0; i<10; i++){
-           Enemy enemy = new EnemyPrinter(new Point2D.Float(startPosition.x-i*30, startPosition.y), level);
-           enemies.add(enemy); 
+           Enemy enemy = new EnemyPrinter(new Point2D.Float(startPosition.x-i*30, startPosition.y), level, this);
+           sprites.add(enemy); 
+           //enemyCount++;
+           enemies.add(enemy);
         } 
         level++;
     }
     
     public void addTurret(Turret turret){
-        turrets.add(turret);
+        sprites.add(turret);
+    }
+    
+    public void removeBullet(Bullet b){
+        //bullets.remove(b);
+    }
+    
+    public void removeEnemy(Enemy e){
+//        enemies.remove(e);
+//        if(enemies.size() < 1){
+//            sendNextWave();
+//        }
+    }
+    
+    public void addBullet(Bullet b){
+        bullets.add(b);
     }
 }

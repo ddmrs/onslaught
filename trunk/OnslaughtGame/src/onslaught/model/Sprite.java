@@ -5,10 +5,11 @@ import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.awt.geom.RectangularShape;
+import onslaught.gui.Zone;
 
 public class Sprite {
-
+    private boolean alive;
+    private Zone zone;
     private Animation animation;
     // position (pixels)
     private Point2D.Float position;
@@ -19,13 +20,17 @@ public class Sprite {
     /**
         Creates a new Sprite object with the specified Animation.
     */
-    public Sprite(Animation anim) {
+    public Sprite(Animation anim, Zone zone) {
         this.animation = anim;
+        this.zone = zone;
+        alive = true;
     }
     
-    public Sprite(Point2D.Float position){
+    public Sprite(Point2D.Float position, Zone zone){
         this.position = position;
         this.animation = new Animation();
+        this.zone = zone;
+        alive = true;
     }
 
     /**
@@ -127,7 +132,7 @@ public class Sprite {
     */
     @Override
     public Object clone() {
-        return new Sprite(animation);
+        return new Sprite(animation, zone);
     }
 
     public Animation getAnimation() {
@@ -156,5 +161,25 @@ public class Sprite {
     
     public static double getDistance(Sprite first, Sprite second) {
         return first.getMiddlePoint().distance(second.getMiddlePoint());
+    }
+
+    public Zone getZone()
+    {
+        return zone;
+    }
+
+    public void setZone(Zone zone)
+    {
+        this.zone = zone;
+    }
+
+    public boolean isAlive()
+    {
+        return alive;
+    }
+
+    public void setAlive(boolean alive)
+    {
+        this.alive = alive;
     }
 }

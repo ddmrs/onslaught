@@ -5,8 +5,12 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.geom.Point2D;
-import javax.swing.JLabel;
+import onslaught.gui.Zone;
 
+/**
+ * Todo: waypoint detection
+ * @author EthiC
+ */
 public abstract class Enemy extends Sprite
 {
     private int health = 100;
@@ -14,8 +18,8 @@ public abstract class Enemy extends Sprite
     private int maxHitpoints;
     private int level;
 
-    public Enemy(Point2D.Float position, int level) {
-        super(position);
+    public Enemy(Point2D.Float position, int level, Zone zone) {
+        super(position, zone);
         this.level = level;
         maxHitpoints = (health * level/10);
         hitpoints = maxHitpoints;
@@ -25,12 +29,13 @@ public abstract class Enemy extends Sprite
     
     public void takeHit(int damage){
         hitpoints -= damage;
+        if(hitpoints < 1){
+            setAlive(false);
+            return;
+            //getZone().removeEnemy(this);
+        }
         // cast int's to double to avoid loss of precision
         health = (int)Math.round(((double)hitpoints/(double)maxHitpoints) * 100);
-    }
-    
-    public boolean isAlive(){
-        return (hitpoints > 0);
     }
     
     @Override
@@ -39,6 +44,5 @@ public abstract class Enemy extends Sprite
         g.setFont(new Font("verdana", 0,10));
         g.setColor(new Color(0,0,0));
         g.drawString(String.valueOf(health), Math.round(getPosition().x), Math.round(getPosition().y));
-        
     }
 }

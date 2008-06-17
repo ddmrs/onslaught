@@ -6,7 +6,9 @@
 package onslaught.model.turret;
 
 import java.awt.geom.Point2D;
+import java.util.List;
 import javax.swing.ImageIcon;
+import onslaught.gui.Zone;
 import onslaught.model.bullet.Bullet;
 import onslaught.model.bullet.BulletRed;
 import onslaught.model.enemy.Enemy;
@@ -22,15 +24,15 @@ public class TurretRed extends Turret{
     private static final int RATE = 2; //This turret shoots 2 times per second
     private static final int RANGE = 200;//TODO: currently pixel dependent
 
-    public TurretRed(Point2D.Float position) {
-        super(position, RATE, RANGE);
+    public TurretRed(Point2D.Float position, Zone zone, List<Enemy> enemies) {
+        super(position, RATE, RANGE, zone, enemies);
         getAnimation().addFrame(new ImageIcon("resources/images/turret-red.png").getImage(), 1);
 	getAnimation().start();
     }
     
     @Override
-    public Bullet shoot() {
-        return new BulletRed(getMiddlePoint(), getTarget());
+    public void shoot(Enemy enemy) {
+        getZone().addBullet(new BulletRed(getMiddlePoint(), enemy, getZone()));
     }
     
 }
