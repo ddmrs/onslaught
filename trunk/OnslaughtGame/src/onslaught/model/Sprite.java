@@ -152,11 +152,11 @@ public class Sprite {
     }
     
     public Point2D.Float getMiddlePoint(){       
-        return new Point2D.Float(position.x + getWidth()/2, position.y + getHeight()/2);
+        return new Point2D.Float(getPosition().x + getWidth()/2, getPosition().y + getHeight()/2);
     }
     
     public Rectangle2D getCollisionBox(){
-        return new Rectangle(Math.round(position.x), Math.round(position.y), getWidth(), getHeight());
+        return new Rectangle(Math.round(getPosition().x), Math.round(getPosition().y), getWidth(), getHeight());
     }
     
     public static double getDistance(Sprite first, Sprite second) {
@@ -181,5 +181,10 @@ public class Sprite {
     public void setAlive(boolean alive)
     {
         this.alive = alive;
+    }
+
+    public void setPosition(Point2D.Float position)
+    {
+        this.position = position;
     }
 }

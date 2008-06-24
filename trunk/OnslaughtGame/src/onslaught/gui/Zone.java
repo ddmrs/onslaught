@@ -151,14 +151,16 @@ public class Zone extends JPanel implements Runnable
             else{
                 if(s instanceof Enemy){
                     enemyCount++;
+                    enemies.remove(s);
                 }
                 it.remove();
+                
             }
         }
         sprites.addAll(bullets);
         bullets.clear();
         
-        if(enemyCount >= 10){
+        if(enemyCount >= 40){
             sendNextWave();
             enemyCount = 0;
         }
@@ -229,17 +231,24 @@ public class Zone extends JPanel implements Runnable
     // Game functions --------------------------------------------------------//
     public void sendNextWave() {
         Point2D.Float startPosition = new Point2D.Float(1, 300);
-        for(int i = 0; i<10; i++){
-           Enemy enemy = new EnemyPrinter(new Point2D.Float(startPosition.x-i*30, startPosition.y), level, this);
+        for(int i = 0; i<40; i++){
+           Enemy enemy = new EnemyPrinter(new Point2D.Float(startPosition.x-i*20, startPosition.y), level, this);
            sprites.add(enemy); 
            //enemyCount++;
            enemies.add(enemy);
+           if(i ==10 || i==20 || i==30){
+               level++;
+           }
         } 
         level++;
     }
     
     public void addTurret(Turret turret){
         sprites.add(turret);
+        Turret t = new TurretBlue(new Point2D.Float(turret.getPosition().x + 30, turret.getPosition().y), this, enemies);
+        sprites.add(t);
+        t = new TurretBlue(new Point2D.Float(t.getPosition().x + 30, t.getPosition().y), this, enemies);
+        sprites.add(t);        
     }
     
     public void removeBullet(Bullet b){
