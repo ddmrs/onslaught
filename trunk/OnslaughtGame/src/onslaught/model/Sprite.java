@@ -16,6 +16,10 @@ public class Sprite {
     // velocity (pixels per millisecond)
     private float dx;
     private float dy;
+    //store middlewidth and height to reduce calculations
+    //TODO: implements this! Problem is that image width is known only after constructor, should be solved
+    private float middleWidth;
+    private float middleHeight;
 
     /**
         Creates a new Sprite object with the specified Animation.

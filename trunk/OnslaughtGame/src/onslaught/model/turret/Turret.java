@@ -29,6 +29,8 @@ public abstract class Turret extends Sprite
     private long currentTime;
     private long timeLastShot;
     private long reloadTime;
+    private Point2D.Float rotationCenter;
+    private Point2D.Float middlePoint;//store the center, stays the same unless moved
     
     private List<Enemy> targets;
 
@@ -51,10 +53,16 @@ public abstract class Turret extends Sprite
         reloadTime = (long) 1000.0 / rate;
         reloadTime *= 1000000L;    // ms --> nanosecs 
     }
-
+    private boolean start = true;
+    
     @Override
     public void update(long elapsedTime)
     {
+        if(start){
+            start = false;
+            rotationCenter = new Point2D.Float(getWidth()/2, getWidth()/2);
+            middlePoint = super.getMiddlePoint();
+        }
         currentTime = elapsedTime;
         trackEnemies();
     }
@@ -114,8 +122,8 @@ public abstract class Turret extends Sprite
     public void targetEnemy(Enemy target)
     {
         //calculate sin(alpha) = overstaande rechthoekzijde / schuine zijde
-        float xDist = target.getMiddlePoint().x - getMiddlePoint().x;
-        float yDist = target.getMiddlePoint().y - getMiddlePoint().y;
+        float xDist = target.getMiddlePoint().x - middlePoint.x;
+        float yDist = target.getMiddlePoint().y - middlePoint.y;
         double distance = Math.sqrt(xDist * xDist + yDist * yDist);
         double sinusAngle = xDist / distance;
         //now get the angle by inverse sinus(arch sinus)
@@ -126,10 +134,11 @@ public abstract class Turret extends Sprite
         {//enemies are above the turret: quadrant II and III
             newShootAngle = 0 + targetAngle;
         }
+        double turnAngle = newShootAngle - oldShootAngle;//doesnt measure shortest turnAngle yet
         //reset to zero
-        affineTransform.rotate(-oldShootAngle, getWidth() / 2, getWidth() / 2);
+        //affineTransform.rotate(-oldShootAngle, getWidth() / 2, getWidth() / 2);
         //to new angle
-        affineTransform.rotate(newShootAngle, getWidth() / 2, getWidth() / 2);
+        affineTransform.rotate(turnAngle, rotationCenter.x, rotationCenter.y);
         oldShootAngle = newShootAngle;
     //set Target
     }
@@ -143,5 +152,5 @@ public abstract class Turret extends Sprite
     {
         final Graphics2D graphics2D = (Graphics2D) graphics;
         graphics2D.drawImage(getAnimation().getImage(), affineTransform, null);
-    }    
+    }   
 }
