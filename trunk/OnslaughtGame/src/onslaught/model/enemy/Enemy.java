@@ -27,6 +27,12 @@ public abstract class Enemy extends Sprite
         setVelocityY(0);
     }
     
+    @Override
+    public void update(long elapsedTime) {
+        super.update(elapsedTime);
+        checkReachedEnd();   
+    }
+    
     public void takeHit(int damage){
         hitpoints -= damage;
         if(hitpoints < 1){
@@ -36,6 +42,16 @@ public abstract class Enemy extends Sprite
         }
         // cast int's to double to avoid loss of precision
         health = (int)Math.round(((double)hitpoints/(double)maxHitpoints) * 100);
+    }
+    
+    /**
+     * This method checks wether an enemy got through the defense
+     */
+    private void checkReachedEnd(){
+        if(getPosition().x > getZone().getWidth()){
+            getZone().reachedEnd();
+            setAlive(false);
+        }
     }
     
     @Override

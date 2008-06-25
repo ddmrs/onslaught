@@ -55,6 +55,7 @@ public class Zone extends JPanel implements Runnable
     private long waveTime;
     private long periodBetweenFrames;
     private int enemyCount;//counts how many enemies are on screen
+    private int lives = 10;//a game can handle 10 enemies reaching the end
     //timevars
     private long currentTime,  oldTime,  timeDifference,  sleepTime;
     private long overSleepTime = 0L;
@@ -264,5 +265,12 @@ public class Zone extends JPanel implements Runnable
     
     public void addBullet(Bullet b){
         bullets.add(b);
+    }
+    
+    public void reachedEnd(){
+        lives--;
+        if(lives < 1){
+            stop();//game ended
+        }
     }
 }

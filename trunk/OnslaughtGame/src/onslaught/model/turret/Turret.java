@@ -94,7 +94,7 @@ public abstract class Turret extends Sprite
     
     public void trackEnemies(){
         for(Enemy enemy: targets){
-            if(enemy.getCollisionBox().intersects(this.getRangeBox()) && enemy.isAlive()){
+            if(enemy.isAlive() && enemy.getCollisionBox().intersects(this.getRangeBox())){
                 targetEnemy(enemy);
                 if(isAbleToShoot()){
                     shoot(enemy);

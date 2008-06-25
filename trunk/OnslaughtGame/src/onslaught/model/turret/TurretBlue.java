@@ -2,6 +2,7 @@ package onslaught.model.turret;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Image;
 import onslaught.model.enemy.Enemy;
 import onslaught.model.bullet.BulletBlue;
 import onslaught.model.bullet.Bullet;
@@ -14,12 +15,14 @@ public class TurretBlue extends Turret
 {
     //TODO: All rates upgradable fields are static now
     // these fields have to be a base that can be multiplied by a factor of upgrde
-    private static final int RATE = 6; //This turret shoots 2 times per second
+    private static final int RATE = 2; //This turret shoots 2 times per second
     private static final int RANGE = 150;//TODO: currently pixel dependent
+    private static final Image turretBlue = new ImageIcon("resources/images/turret-blue.png").getImage();
+    
     public TurretBlue(Point2D.Float position, Zone zone, List<Enemy> enemies)
     {
         super(position, RATE, RANGE, zone, enemies);
-        getAnimation().addFrame(new ImageIcon("resources/images/turret-blue.png").getImage(), 1);
+        getAnimation().addFrame(turretBlue, 1);
         getAnimation().start();
     }
 
