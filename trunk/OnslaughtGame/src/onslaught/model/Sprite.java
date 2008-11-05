@@ -138,35 +138,58 @@ public class Sprite {
     public Object clone() {
         return new Sprite(animation, zone);
     }
-
+    /**
+     * Gets the animation  for this sprite
+     * */
     public Animation getAnimation() {
         return animation;
     }
-
+    /**
+     * Sets the animation for this sprite
+     * @param animation
+     */
     public void setAnimation(Animation animation) {
         this.animation = animation;
     }
-    
-    public void draw(Graphics g){
-        g.drawImage(animation.getImage(), Math.round(getPosition().x),Math.round(getPosition().y), null);
-    }
-
+    /**
+     * Gets the postition of this sprite on the frame
+     * @return
+     */
     public Point2D.Float getPosition() {
         return position;
     }
-    
+    /**
+     * Sets the postition of this sprite on the frame
+     */
+    public void setPosition(Point2D.Float position)
+    {
+        this.position = position;
+    }
+    /**
+     * Gets the middle(center) of this sprite
+     * */
     public Point2D.Float getMiddlePoint(){       
         return new Point2D.Float(getPosition().x + getWidth()/2, getPosition().y + getHeight()/2);
     }
     
+    /**
+     * Calculates the collisionbox, aka the space where a sprite can collide with another sprite
+     * @return Returns this collisionbox as a rectangle, SHOULD BE ADJUSTED to a circular box to be exact
+     */
     public Rectangle2D getCollisionBox(){
         return new Rectangle(Math.round(getPosition().x), Math.round(getPosition().y), getWidth(), getHeight());
     }
     
+    /**
+     * Calculates the distance between 2 sprites
+     * @param first First sprite    
+     * @param second Second sprite  
+     * @return The distance 
+     */
     public static double getDistance(Sprite first, Sprite second) {
         return first.getMiddlePoint().distance(second.getMiddlePoint());
     }
-
+    
     public Zone getZone()
     {
         return zone;
@@ -176,19 +199,30 @@ public class Sprite {
     {
         this.zone = zone;
     }
-
+    
+    /**
+     * Checks if a sprite is alive
+     * @return
+     */
     public boolean isAlive()
     {
         return alive;
     }
-
+    
+    /**
+     * Set the current alive state
+     * @param alive True if the sprite lives and false if it 'dies'
+     */
     public void setAlive(boolean alive)
     {
         this.alive = alive;
     }
-
-    public void setPosition(Point2D.Float position)
-    {
-        this.position = position;
-    }
+    
+    /**
+     * How this sprite should be drawn on screen
+     * @param g
+     */
+    public void draw(Graphics g){
+        g.drawImage(animation.getImage(), Math.round(getPosition().x),Math.round(getPosition().y), null);
+    }    
 }

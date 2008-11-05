@@ -1,8 +1,6 @@
 package onslaught.gui;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
-
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import javax.swing.JFrame;
@@ -14,23 +12,31 @@ public class OnslaughtFrame extends JFrame implements WindowListener {
 
     private final int FWIDTH = 800;
     private final int FHEIGHT = 600;
+    private Menu menu;
     private Zone zone;
-
+    /**
+     * Constructor, init components, add listenerers and start loop
+     */
     public OnslaughtFrame() {
-        super();
+        super("Java Onslaught");
         initComponents();
-        addWindowListener(this);
-        zone.start();
-        this.setVisible(true);
     }
-
+    /**
+     * set size of frame, make the zone, add a zone and menu
+     */
     public void initComponents() {
-        this.setPreferredSize(new Dimension(FWIDTH, FHEIGHT));
-        zone = new Zone();
-        this.getContentPane().add(zone, BorderLayout.NORTH);
-        this.pack();
+        zone = new Zone(this);
+        getContentPane().add(zone, BorderLayout.NORTH);
+        
+        addWindowListener(this);
+        pack();  
+        setResizable(false);
+        setVisible(true);        
     }
-
+    /**
+     * Runs the game
+     * @param args
+     */
     public static void main(String[] args) {
         new OnslaughtFrame();
     }
@@ -62,5 +68,13 @@ public class OnslaughtFrame extends JFrame implements WindowListener {
 
     public void windowDeactivated(WindowEvent e) {
     //throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public Menu getMenu() {
+        return menu;
+    }
+
+    public void setMenu(Menu menu) {
+        this.menu = menu;
     }
 }

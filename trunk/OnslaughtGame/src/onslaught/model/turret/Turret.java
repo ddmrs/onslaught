@@ -2,19 +2,16 @@ package onslaught.model.turret;
 
 import onslaught.model.*;
 import onslaught.model.enemy.Enemy;
-import onslaught.model.bullet.Bullet;
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.awt.geom.RectangularShape;
+import java.util.ArrayList;
 import java.util.List;
 import onslaught.gui.Zone;
+import onslaught.model.bullet.Bullet;
 
 public abstract class Turret extends Sprite
 {
@@ -22,9 +19,10 @@ public abstract class Turret extends Sprite
     private int damage;
     private float range;
     private int rate; //in shots per second
-    private AffineTransform affineTransform;
-    private double oldShootAngle; // IN RAD FUCKING RAD YEAH
+    private AffineTransform affineTransform = new AffineTransform();
+    private double oldShootAngle = Math.toRadians(45); // IN RAD FUCKING RAD YEAH //image starts with an agle of 45 degrees
     private long shotsFired;
+    private boolean start = true;
     
     private long currentTime;
     private long timeLastShot;
@@ -33,6 +31,7 @@ public abstract class Turret extends Sprite
     private Point2D.Float middlePoint;//store the center, stays the same unless moved
     
     private List<Enemy> targets;
+    private List<Bullet> bullets = new ArrayList<Bullet>();
 
     public Turret(Point2D.Float position, int rate, int range, Zone zone, List<Enemy> enemies)
     {
@@ -42,10 +41,9 @@ public abstract class Turret extends Sprite
         this.targets = enemies;
         this.rate = rate;
         this.range = range;
-        this.oldShootAngle = Math.toRadians(45); //image starts with an agle of 45 degrees
-        calcReloadTime(rate);
-        affineTransform = new AffineTransform();
+        
         affineTransform.translate(getPosition().x, getPosition().y);
+        calcReloadTime(rate);
     }
 
     public void calcReloadTime(int rate)
@@ -53,7 +51,6 @@ public abstract class Turret extends Sprite
         reloadTime = (long) 1000.0 / rate;
         reloadTime *= 1000000L;    // ms --> nanosecs 
     }
-    private boolean start = true;
     
     @Override
     public void update(long elapsedTime)
@@ -101,14 +98,18 @@ public abstract class Turret extends Sprite
     }
     
     public void trackEnemies(){
-        for(Enemy enemy: targets){
+        //loop every enemy
+        for(Enemy enemy: getZone().getEnemies()){
+            //check if enemy is alive and look if enemy comes in range
             if(enemy.isAlive() && enemy.getCollisionBox().intersects(this.getRangeBox())){
+                //target the gun at the enemy
                 targetEnemy(enemy);
+                //shoot only when a bullet is loaded
                 if(isAbleToShoot()){
                     shoot(enemy);
                     setTimeLastShot(currentTime);
-                    
                 }
+                //cannot shoot at multiple targets at once
                 break;
             }
         }
@@ -135,16 +136,17 @@ public abstract class Turret extends Sprite
             newShootAngle = 0 + targetAngle;
         }
         double turnAngle = newShootAngle - oldShootAngle;//doesnt measure shortest turnAngle yet
-        //reset to zero
-        //affineTransform.rotate(-oldShootAngle, getWidth() / 2, getWidth() / 2);
         //to new angle
         affineTransform.rotate(turnAngle, rotationCenter.x, rotationCenter.y);
         oldShootAngle = newShootAngle;
-    //set Target
     }
     
     public void sell(){
         setAlive(false);
+    }
+    
+    public void addBullet(Bullet bullet){
+        getBullets().add(bullet);
     }
     
     @Override
@@ -152,5 +154,13 @@ public abstract class Turret extends Sprite
     {
         final Graphics2D graphics2D = (Graphics2D) graphics;
         graphics2D.drawImage(getAnimation().getImage(), affineTransform, null);
-    }   
+    }
+
+    public List<Bullet> getBullets() {
+        return bullets;
+    }
+
+    public void clearBullets(){
+        bullets.clear();
+    }
 }

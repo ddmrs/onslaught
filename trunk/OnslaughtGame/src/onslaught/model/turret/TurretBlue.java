@@ -1,11 +1,9 @@
 package onslaught.model.turret;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import onslaught.model.enemy.Enemy;
 import onslaught.model.bullet.BulletBlue;
-import onslaught.model.bullet.Bullet;
 import java.awt.geom.Point2D;
 import java.util.List;
 import javax.swing.ImageIcon;
@@ -37,6 +35,6 @@ public class TurretBlue extends Turret
     @Override
     public void shoot(Enemy enemy)
     {
-        getZone().addBullet(new BulletBlue(getMiddlePoint(), enemy, getZone()));
+        addBullet(new BulletBlue(getMiddlePoint(), enemy, getZone()));
     }
 }
