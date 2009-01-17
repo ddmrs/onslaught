@@ -1,5 +1,7 @@
 package onslaught.gui;
 
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import onslaught.model.turret.TurretBlue;
 import onslaught.model.turret.Turret;
 import onslaught.model.enemy.EnemyPrinter;
@@ -9,14 +11,21 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.Toolkit;
+import java.awt.event.KeyAdapter;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseListener;
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.JPanel;
 
+import onslaught.interfaces.ISelectable;
 import onslaught.model.*;
 import onslaught.model.turret.TurretRed;
 
@@ -35,7 +44,6 @@ public class Zone extends JPanel implements Runnable {
     private static final int PWIDTH = 800;
     private static final Color BACKGROUNDCOLOR = new Color(247, 207, 172);
     private static final int FPS = 40; // milliseconds
-
     private static final int WAVELENGTH = 10;
     private static final int MAXLIVES = 10;
     /* Number of frames with a delay of 0 ms before the animation thread yields
@@ -44,10 +52,13 @@ public class Zone extends JPanel implements Runnable {
     /* no. of frames that can be skipped in any one animation loop
     i.e the games state is updated but not rendered*/
     private final int MAX_FRAME_SKIPS = 5;   // was 2;
-
     private final Point2D.Float startPosition = new Point2D.Float(1, 300);
-    //lists
+    // Alle objecten
     private List<Sprite> sprites = new ArrayList<Sprite>();
+    // Alle klikbare objecten
+    private List<ISelectable> selectables = new ArrayList<ISelectable>();
+    // temp objecten die geadd moeten worden.
+    private List<Sprite> tempSprites = new ArrayList<Sprite>();
     //loopinfo
     private boolean proceed = true;
     //gamevar's
@@ -62,8 +73,6 @@ public class Zone extends JPanel implements Runnable {
     private long overSleepTime = 0L;
     private int noDelays = 0;
     private long excess = 0L;
-    
-    private List<Sprite> tempSprites = new ArrayList<Sprite>();
 
     public Zone(OnslaughtFrame frame) {
         parentFrame = frame;
@@ -87,15 +96,17 @@ public class Zone extends JPanel implements Runnable {
 
         setFocusable(true);
         requestFocus();
+        this.addMouseListener(new TurretMouseListener());
+        this.addKeyListener(this.keybListener);
     }
 
     // wait for the JPanel to be added to the JFrame before starting
     @Override
     public void addNotify() {
-        super.addNotify();   // creates the peer
-
-        start();         // start the thread
-
+        // creates the peer
+        super.addNotify();
+        // start the thread
+        start();
     }
 
     public void start() {
@@ -258,11 +269,14 @@ public class Zone extends JPanel implements Runnable {
      * @param turret
      */
     public void addTurret(Turret turret) {
-        tempSprites.add(turret);
-//        Turret t = new TurretBlue(new Point2D.Float(turret.getPosition().x + 30, turret.getPosition().y), this, getEnemies());
-//        sprites.add(t);
-//        t = new TurretBlue(new Point2D.Float(t.getPosition().x + 30, t.getPosition().y), this, getEnemies());
-//        sprites.add(t);
+        this.addSprite(turret);
+    }
+
+    public void addSprite(Sprite sprite) {
+        tempSprites.add(sprite);
+        if (sprite instanceof ISelectable) {
+            selectables.add((ISelectable) sprite);
+        }
     }
 
     /**
@@ -273,15 +287,13 @@ public class Zone extends JPanel implements Runnable {
 //    public void addBullet(Bullet bullet) {
 //        sprites.add(bullet);
 //    }
-
     /**
      * If an enemy reaches the end of the screen or the castle, then a live is wasted.
      */
     public void reachedEnd() {
         wastedLives++;
         if (wastedLives >= MAXLIVES) {
-            stop();//game ended
-
+            this.stop();//game ended
         }
     }
 
@@ -311,5 +323,43 @@ public class Zone extends JPanel implements Runnable {
             }
         }
         return enemies;
+    }
+
+    private class TurretMouseListener extends MouseAdapter {
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+            Rectangle2D tinyCursorBox = new Rectangle(e.getX(), e.getY(), 1, 1);
+            for (ISelectable selectableItem : selectables) {
+                if (selectableItem instanceof Turret) {
+                    Turret turret = (Turret) selectableItem;
+                    if (turret.getCollisionBox().intersects(tinyCursorBox)) {
+                        boolean selected = selectableItem.select();
+                        if(selected){
+                            selectedTurret = turret;
+                        }else{
+                            selectedTurret = null;
+                        }
+                    } else {
+                        selectableItem.deselect();
+                    }
+                }
+            }
+        }
+    }
+    private KeyAdapter keybListener = new TurretKeyboardListener();
+    private Turret selectedTurret = null;
+
+    private class TurretKeyboardListener extends KeyAdapter {
+        
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+            if(selectedTurret != null){
+                if(e.getKeyCode() == KeyEvent.VK_M){
+                    System.out.println("M key pressed!");
+                }
+            }
+        }
     }
 }
