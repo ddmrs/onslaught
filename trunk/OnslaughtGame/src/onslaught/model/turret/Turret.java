@@ -1,6 +1,7 @@
 package onslaught.model.turret;
 
 import java.awt.Color;
+import java.awt.Shape;
 import onslaught.model.*;
 import onslaught.model.enemy.Enemy;
 import java.awt.Graphics;
@@ -15,6 +16,8 @@ import java.util.List;
 import onslaught.gui.Zone;
 import onslaught.interfaces.ISelectable;
 import onslaught.model.bullet.Bullet;
+import onslaught.util.CollisionBoxType;
+import onslaught.util.CollisionUtils;
 
 public abstract class Turret extends Sprite implements ISelectable {
 
@@ -34,6 +37,7 @@ public abstract class Turret extends Sprite implements ISelectable {
     private boolean selected = false;
     private List<Enemy> targets;
     private List<Bullet> bullets = new ArrayList<Bullet>();
+    private boolean movable = false;
 
     public Turret(Point2D.Float position, int rate, int range, Zone zone, List<Enemy> enemies) {
         super(position, zone);
@@ -70,6 +74,16 @@ public abstract class Turret extends Sprite implements ISelectable {
         return ellipse.getBounds2D();
     }
 
+    @Override
+    public Shape getCollisionBox() {
+        return this.getRangeBox();
+    }
+
+    @Override
+    public CollisionBoxType getCollisionBoxType() {
+        return CollisionBoxType.CIRCLE;
+    }
+
     /**
      * Determines wether a turret is allowed to shoot or not.
      * @param currentTime time of request
@@ -103,7 +117,7 @@ public abstract class Turret extends Sprite implements ISelectable {
         //loop every enemy
         for (Enemy enemy : getZone().getEnemies()) {
             //check if enemy is alive and look if enemy comes in range
-            if (enemy.isAlive() && enemy.getCollisionBox().intersects(this.getRangeBox())) {
+            if (enemy.isAlive() && CollisionUtils.isCollided(enemy, this)) {
                 //target the gun at the enemy
                 targetEnemy(enemy);
                 //shoot only when a bullet is loaded
@@ -155,6 +169,8 @@ public abstract class Turret extends Sprite implements ISelectable {
         if (selected) {
             graphics.setColor(Color.MAGENTA);
             graphics.drawOval((int) (super.getMiddlePoint().x - range), (int) (super.getMiddlePoint().y - range), (int) (range * 2), (int) (range * 2));
+            graphics.setColor(Color.GREEN);
+            graphics.drawRect((int)Math.round(getCollisionBox().getBounds2D().getX()), (int)Math.round(getCollisionBox().getBounds2D().getY()), (int)Math.round(getCollisionBox().getBounds2D().getWidth()),(int) Math.round(getCollisionBox().getBounds2D().getHeight()));
         }
         final Graphics2D graphics2D = (Graphics2D) graphics;
         graphics2D.drawImage(getAnimation().getImage(), affineTransform, null);
@@ -169,9 +185,9 @@ public abstract class Turret extends Sprite implements ISelectable {
     }
 
     public boolean select() {
-        if(selected){
+        if (selected) {
             selected = false;
-        }else{
+        } else {
             selected = true;
         }
         return selected;

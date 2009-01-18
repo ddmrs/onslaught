@@ -3,11 +3,13 @@ package onslaught.model;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Rectangle;
+import java.awt.Shape;
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 import onslaught.gui.Zone;
+import onslaught.interfaces.ICollidable;
+import onslaught.util.CollisionBoxType;
 
-public class Sprite {
+public class Sprite implements ICollidable{
     private boolean alive;
     private Zone zone;
     private Animation animation;
@@ -20,7 +22,6 @@ public class Sprite {
     //TODO: implements this! Problem is that image width is known only after constructor, should be solved
     private float middleWidth;
     private float middleHeight;
-
     /**
         Creates a new Sprite object with the specified Animation.
     */
@@ -174,10 +175,14 @@ public class Sprite {
     
     /**
      * Calculates the collisionbox, aka the space where a sprite can collide with another sprite
-     * @return Returns this collisionbox as a rectangle, SHOULD BE ADJUSTED to a circular box to be exact
+     * @return Returns this collisionbox as a rectangle based on the sprites width and height and position
      */
-    public Rectangle2D getCollisionBox(){
+    public Shape getCollisionBox(){
         return new Rectangle(Math.round(getPosition().x), Math.round(getPosition().y), getWidth(), getHeight());
+    }
+
+    public CollisionBoxType getCollisionBoxType(){
+        return CollisionBoxType.RECTANGLE;
     }
     
     /**

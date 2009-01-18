@@ -14,6 +14,7 @@ import java.awt.geom.Rectangle2D;
 import javax.swing.ImageIcon;
 import onslaught.gui.Zone;
 import onslaught.model.enemy.Enemy;
+import onslaught.util.CollisionUtils;
 
 /**
  *
@@ -86,7 +87,7 @@ public class BulletRed extends Bullet {
     public void checkTarget(){
         for(Enemy enem: getZone().getEnemies()){
             if(enem.isAlive()){
-                if(enem.getCollisionBox().intersects(this.getCollisionBox())){
+                if(CollisionUtils.isCollided(enem, this)){
                     enem.takeHit(damage);
                     //getZone().removeBullet(this);
                     setAlive(false);

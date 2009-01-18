@@ -4,8 +4,9 @@ import onslaught.model.enemy.Enemy;
 import onslaught.model.*;
 import java.awt.geom.Point2D;
 import onslaught.gui.Zone;
+import onslaught.interfaces.ICollidable;
 
-public abstract class Bullet extends Sprite {
+public abstract class Bullet extends Sprite implements ICollidable{
 
     protected int damage;
     protected Enemy target;
@@ -26,7 +27,7 @@ public abstract class Bullet extends Sprite {
 
     public void checkTarget() {
         if (target.isAlive()) {
-            if (target.getCollisionBox().intersects(this.getCollisionBox())) {
+            if (target.getCollisionBox().getBounds2D().intersects(this.getCollisionBox().getBounds2D())) {
                 target.takeHit(damage);
                 //getZone().removeBullet(this);
                 setAlive(false);
