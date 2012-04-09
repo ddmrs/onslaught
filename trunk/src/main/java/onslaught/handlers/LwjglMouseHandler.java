@@ -61,4 +61,14 @@ public class LwjglMouseHandler implements IMouseHandler {
     public void setNewPosition(int newX, int newY) {
         Mouse.setCursorPosition(newX, OnslaughtGame.SCREEN_HEIGHT - newY);
     }
+
+    @Override
+    public void setX(int x) {
+        Mouse.setCursorPosition(x, Mouse.getY());
+    }
+
+    @Override
+    public void setY(int y) {
+        Mouse.setCursorPosition(Mouse.getX(), OnslaughtGame.SCREEN_HEIGHT - y);
+    }
 }

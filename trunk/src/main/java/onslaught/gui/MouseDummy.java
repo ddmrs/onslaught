@@ -21,6 +21,7 @@ public class MouseDummy extends Entity {
     private ISelectable selected = null;
     private Integer oldX;
     private Integer oldY;
+    private boolean newTurret = true;
 
     public MouseDummy(GameOperations gameOps) {
         super(new CursorSprite(), IMouseHandler.DEFAULT.getX(), IMouseHandler.DEFAULT.getY());
@@ -34,7 +35,9 @@ public class MouseDummy extends Entity {
             oldY = IMouseHandler.DEFAULT.getY();
         }
         if (oldX != null) {
-            IMouseHandler.DEFAULT.setNewPosition(oldX, oldY);
+            IMouseHandler.DEFAULT.setX(oldX);
+            IMouseHandler.DEFAULT.setY(oldY);
+
         }
         IMouseHandler.DEFAULT.setGrabbed(grabbed);
     }
@@ -53,9 +56,13 @@ public class MouseDummy extends Entity {
             if (turret != null) {
                 turret.setX(x);
                 turret.setY(y);
-                turret.setState(TurretEnum.OPERATING);
-                gameOps.addEntity(turret);
-                turret = null;
+                if (turret.isPlaceable((int) x, (int) y)) {
+                    turret.setState(TurretEnum.OPERATING);
+                    if (newTurret) {
+                        gameOps.addEntity(turret);
+                    }
+                    turret = null;
+                }
             } else {
                 Rectangle2D rect = new Rectangle2D.Double(x - defSprite.widthPart, y - defSprite.heightPart, defSprite.getWidth(), defSprite.getHeight());
                 if (selected != null) {
@@ -84,8 +91,21 @@ public class MouseDummy extends Entity {
         sprite.draw((float) x, (float) y, (float) z, 0);
     }
 
-    public void setTurret(Turret turret) {
+    @Override
+    public void setX(double x) {
+        IMouseHandler.DEFAULT.setX((int) x);
+        super.setX(x);
+    }
+
+    @Override
+    public void setY(double y) {
+        IMouseHandler.DEFAULT.setY((int) y);
+        super.setY(y);
+    }
+
+    public void setTurret(Turret turret, boolean newTurret) {
         this.turret = turret;
+        this.newTurret = newTurret;
     }
 
     public ISelectable getSelected() {

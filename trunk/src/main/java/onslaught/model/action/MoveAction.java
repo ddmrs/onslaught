@@ -16,6 +16,6 @@ public class MoveAction implements GameAction {
 
     @Override
     public void execute() {
-        //gameOps.
+        gameOps.moveTurret();
     }
 }

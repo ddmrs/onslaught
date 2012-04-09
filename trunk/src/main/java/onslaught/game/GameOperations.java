@@ -7,7 +7,9 @@ import onslaught.gui.MouseDummy;
 import onslaught.interfaces.ISelectable;
 import onslaught.model.Entity;
 import onslaught.model.enemy.Enemy;
+import onslaught.model.enums.TurretEnum;
 import onslaught.model.turret.Turret;
+import onslaught.model.turret.TurretBlue;
 import onslaught.model.turret.TurretType;
 
 /**
@@ -34,9 +36,11 @@ public class GameOperations {
     private List<Level> levels = new ArrayList<Level>();
     private long totalTimepassed = 0;
     private MouseDummy mousy;
+    private TurretBlue DUMMY_TURRET;
 
     public void prepareNewGame() {
         entities.clear();
+        DUMMY_TURRET = new TurretBlue(0, 0, this);
         stats = new Statistics();
         props = new GameProperties();
         // Add the goal for the enemies
@@ -63,25 +67,22 @@ public class GameOperations {
     }
 
     /**
-     * Delete a turret from the game.(or Sell one)
-     */
-    public void deleteTurret() {
-        if (!paused) {
-            if (mousy.getSelected() != null && mousy.getSelected() instanceof Turret) {
-                Turret turrToSell = (Turret) mousy.getSelected();
-                turrToSell.sell();
-            }
-        }
-    }
-
-    /**
      * Add a turret to the game screen
      *
      * @param turret
      */
     public void addTurret(TurretType turretType) {
         if (!paused) {
-            mousy.setTurret(turretType.buildTurret(0, 0, this));
+            mousy.setTurret(turretType.buildTurret(0, 0, this), true);
+        }
+    }
+
+    /**
+     * Delete a turret from the game.(or Sell one)
+     */
+    public void deleteTurret() {
+        if (!paused) {
+            getSelectedTurret().sell();
         }
     }
 
@@ -90,10 +91,7 @@ public class GameOperations {
      */
     public void upgradeRangeOfSelectedTurret() {
         if (!paused) {
-            if (mousy.getSelected() instanceof Turret) {
-                Turret sel = (Turret) mousy.getSelected();
-                sel.upgradeRange();
-            }
+            getSelectedTurret().upgradeRange();
         }
     }
 
@@ -102,10 +100,7 @@ public class GameOperations {
      */
     public void upgradeRateOfSelectedTurret() {
         if (!paused) {
-            if (mousy.getSelected() instanceof Turret) {
-                Turret sel = (Turret) mousy.getSelected();
-                sel.upgradeRate();
-            }
+            getSelectedTurret().upgradeRate();
         }
     }
 
@@ -114,11 +109,27 @@ public class GameOperations {
      */
     public void upgradeDamageOfSelectedTurret() {
         if (!paused) {
-            if (mousy.getSelected() instanceof Turret) {
-                Turret sel = (Turret) mousy.getSelected();
-                sel.upgradeDamage();
+            getSelectedTurret().upgradeDamage();
+        }
+    }
+
+    public void moveTurret() {
+        if (!paused) {
+            Turret tur = getSelectedTurret();
+            if (tur != DUMMY_TURRET) {
+                mousy.setX(tur.getX());
+                mousy.setY(tur.getY());
+                tur.setState(TurretEnum.MOVABLE);
+                mousy.setTurret(tur, false);
             }
         }
+    }
+
+    private Turret getSelectedTurret() {
+        if (mousy.getSelected() != null && mousy.getSelected() instanceof Turret) {
+            return (Turret) mousy.getSelected();
+        }
+        return DUMMY_TURRET;
     }
 
     /**
@@ -144,9 +155,11 @@ public class GameOperations {
             for (Entity newEntity : newEntities) {
                 if (newEntity instanceof ISelectable) {
                     selectables.add((ISelectable) newEntity);
-                } else if (newEntity instanceof Enemy) {
+                }
+                if (newEntity instanceof Enemy) {
                     enemies.add((Enemy) newEntity);
-                } else if (newEntity instanceof Turret) {
+                }
+                if (newEntity instanceof Turret) {
                     turrets.add((Turret) newEntity);
                 }
             }

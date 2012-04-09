@@ -20,7 +20,7 @@ public enum TurretEnum{
    MOVABLE(){
        @Override
        public Sprite getDecoratedSprite(Turret turret){
-           return new MovingTurretSD(new RangeTurretSD1((super.getDecoratedSprite(turret)), turret));
+           return new MovingTurretSD(SELECTED.getDecoratedSprite(turret), turret);
        }
    };
    
