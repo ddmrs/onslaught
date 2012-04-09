@@ -1,13 +1,10 @@
 package onslaught.model.turret;
 
-import java.awt.Color;
+import java.awt.Rectangle;
 import java.awt.Shape;
 import onslaught.model.*;
 import onslaught.model.enemy.Enemy;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
-import java.util.List;
 import onslaught.game.GameOperations;
 import onslaught.game.Map;
 import onslaught.interfaces.ICollidable;
@@ -17,9 +14,6 @@ import onslaught.model.enums.TurretEnum;
 import onslaught.util.CollisionBoxType;
 import onslaught.util.CollisionUtils;
 import onslaught.util.EntityVisitor;
-import static onslaught.model.enums.TurretEnum.SELECTED;
-import static onslaught.model.enums.TurretEnum.MOVABLE;
-import static onslaught.model.enums.TurretEnum.OPERATING;
 
 public abstract class Turret extends Entity implements IMovable, ICollidable {
     // TURRET TEXTURE's INITIAL DIRECTION = -45°
@@ -33,11 +27,8 @@ public abstract class Turret extends Entity implements IMovable, ICollidable {
     protected int rangeLvl = 1;
     protected int rateLvl = 1;
     private long currentTime = 0;
-    private long timeLastShot;
     private long reloadTime;
-    private List<Enemy> targets;
     private TurretEnum state;
-    //private boolean locked = false;
     private Rectangle2D rangeBox;
     private Rectangle2D clickableZone;
     private Enemy target;
@@ -48,9 +39,6 @@ public abstract class Turret extends Entity implements IMovable, ICollidable {
     public Turret(String ref, double startX, double startY, int rate, int range, GameOperations gameOps, int damage) {
         super(ref, startX, startY);
         turretSprite = sprite;
-        //this.currentTime = 0;
-        this.timeLastShot = -1L;
-        this.targets = gameOps.getEnemies();
         this.rate = rate;
         radius = range;
         calcReloadTime();
@@ -61,33 +49,28 @@ public abstract class Turret extends Entity implements IMovable, ICollidable {
         rotationAngle -= START_ANGLE;
         startAngle = START_ANGLE;
         this.damage = damage;
-        //oldAngle = 0;
         setState(TurretEnum.MOVABLE);
     }
 
-    private boolean isPlaceable() {
-        boolean placeable = true;
-        for (Turret other : gameOps.getTurrets()) {
-            if (other != this && other.getBounds().intersects(this.getBounds())) {
-                placeable = false;
-            }
+    public boolean isPlaceable(int newX, int newY) {
+        Rectangle newBounds = new Rectangle(newX, newY, getSprite().getWidth(), getSprite().getHeight());
+        if (Map.getGoal().getBounds().intersects(newBounds)) {
+            return false;
         }
-        if (!placeable && Map.getGoal().getBounds().intersects(this.getBounds())) {
-            placeable = false;
+        for (Turret other : gameOps.getTurrets()) {
+            if (other != this && other.getBounds().intersects(newBounds)) {
+                return false;
+            }
         }
         for (Entity entity : gameOps.getNewEntities()) {
-            if (!placeable || entity instanceof Turret) {
-                if (entity.getBounds().intersects(this.getBounds())) {
-                    placeable = false;
-                    break;
-                }
+            if (entity instanceof Turret && entity.getBounds().intersects(newBounds)) {
+                return false;
             }
         }
-        return placeable;
+        return true;
     }
 
     private void calcRangeBox() {
-        // this.rangeBox = new Rectangle2D.Double(x - range, y - range, range * 2, range * 2);
         this.clickableZone = new Rectangle2D.Double(x - sprite.getWidthPart(), y - sprite.getHeightPart(), sprite.getWidth(), sprite.getHeight());
     }
 
@@ -95,6 +78,7 @@ public abstract class Turret extends Entity implements IMovable, ICollidable {
         this.reloadTime = (long) (1000000.0 / rate);
     }
 
+    @Override
     public void update(long elapsedTime) {
         currentTime += elapsedTime;
         if (this.state != TurretEnum.MOVABLE) {
@@ -147,9 +131,7 @@ public abstract class Turret extends Entity implements IMovable, ICollidable {
 
     /**
      * Function that tracks an enemy, updates the image to look in enemy
-     * direction TODO: calculate rotation angle instead of resetting, dno maybe
-     * more performance then TODO: turret instantly points at enemy, ist very
-     * realistic ;-)
+     * direction
      *
      * @param target Enemy to track
      */
@@ -183,16 +165,12 @@ public abstract class Turret extends Entity implements IMovable, ICollidable {
         return CollisionBoxType.CIRCLE;
     }
 
-    public void setTimeLastShot(long timeLastShot) {
-        this.timeLastShot = timeLastShot;
-    }
-
     public void setRate(int rate) {
         this.rate = rate;
     }
 
     public boolean isSelected() {
-        return (state == SELECTED);
+        return (state == TurretEnum.SELECTED);
     }
 
     public void sell() {
@@ -218,34 +196,18 @@ public abstract class Turret extends Entity implements IMovable, ICollidable {
     public void upgradeRate() {
         if (rateLvl < 5) {
             rateLvl++;
-            rate += rate /2;
+            rate += rate / 2;
             calcReloadTime();
         }
         System.out.println(getInfo());
     }
 
     @Override
-    public void draw(Graphics graphics) {
-        switch (state) {
-            case SELECTED:
-//            graphics.setColor(Color.MAGENTA);
-//            graphics.drawOval((int) (super.getMiddlePoint().x - range), (int) (super.getMiddlePoint().y - range), (int) (range * 2), (int) (range * 2));
-                graphics.setColor(Color.GREEN);
-                graphics.drawRect((int) rangeBox.getX(), (int) rangeBox.getY(), (int) rangeBox.getWidth(), (int) rangeBox.getHeight());
-                break;
-            case MOVABLE:
-                break;
-            case OPERATING:
-                break;
-        }
-        final Graphics2D graphics2D = (Graphics2D) graphics;
-        //graphics2D.drawImage(super.sprite.getImage(), affineTransform, null);
-    }
-
     public void select() {
         setState(TurretEnum.SELECTED);
     }
 
+    @Override
     public void deselect() {
         setState(TurretEnum.OPERATING);
     }
@@ -254,15 +216,26 @@ public abstract class Turret extends Entity implements IMovable, ICollidable {
         return state;
     }
 
+    @Override
+    public void draw() {
+        // Don't keep drawing if mouse is already drawing you
+        if (state != TurretEnum.MOVABLE) {
+            super.draw();
+        }
+    }
+
+    @Override
     public void mouseMoves(int x, int y) {
     }
 
+    @Override
     public void replace(int x, int y) {
         super.x = (double) x;
         super.y = (double) y;
         this.state = TurretEnum.SELECTED;
     }
 
+    @Override
     public void setMoving(boolean moving) {
         if (moving) {
             this.state = TurretEnum.MOVABLE;
@@ -271,6 +244,7 @@ public abstract class Turret extends Entity implements IMovable, ICollidable {
         }
     }
 
+    @Override
     public Rectangle2D getClickZone() {
         return this.clickableZone;
     }
@@ -303,15 +277,20 @@ public abstract class Turret extends Entity implements IMovable, ICollidable {
         return turretSprite;
     }
 
+    public void setTurretSprite(Sprite turretSprite) {
+        this.turretSprite = turretSprite;
+        this.sprite = turretSprite;
+    }
+
     public void setDamage(int damage) {
         this.damage = damage;
     }
 
     @Override
     public String toString() {
-        StringBuffer sb = new StringBuffer();
-        sb.append("X en Y : " + x + ',' + y);
-        sb.append(" ;Width: " + sprite.getWidth() + ',' + sprite.getHeight());
+        StringBuilder sb = new StringBuilder();
+        sb.append("X en Y : ").append(x).append(",").append(y);
+        sb.append(" ;Width: ").append(sprite.getWidth()).append(",").append(sprite.getHeight());
         return sb.toString();
     }
 

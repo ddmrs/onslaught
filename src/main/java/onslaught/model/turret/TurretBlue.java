@@ -18,7 +18,7 @@ public class TurretBlue extends Turret {
     public TurretBlue(double startX, double startY, GameOperations gameOps) {
         super(URL, startX, startY, RATE, RANGE, gameOps, START_DMG);
         healthSD = new HealthSD(this.sprite);
-        this.sprite = healthSD;
+        //setTurretSprite(healthSD);
     }
 
     @Override

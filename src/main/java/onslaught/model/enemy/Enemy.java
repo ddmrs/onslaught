@@ -19,7 +19,6 @@ public abstract class Enemy extends Entity implements ICollidable {
     private int hitpoints;
     private int maxHitpoints;
     private static final double SPEED = 100f;
-    private boolean drawHealth = true;
     private Goal goal;
     private Level level;
     private HealthSD healthSD;
@@ -86,15 +85,6 @@ public abstract class Enemy extends Entity implements ICollidable {
     private void checkReachedEnd() {
         if (goal.enterGoal(this)) {
             super.kill();
-        }
-    }
-
-    @Override
-    public void draw(Graphics graphics) {
-        super.draw(graphics);
-
-        if (drawHealth) {
-            healthSD.setHealth("" + health);
         }
     }
 

@@ -9,9 +9,9 @@ import onslaught.handlers.LwjglMouseHandler;
  * @author ethic
  */
 public interface IMouseHandler {
-    
+
     IMouseHandler DEFAULT = new LwjglMouseHandler();
-    
+
     /**
      *
      * @return The x position of the mouse.
@@ -43,12 +43,7 @@ public interface IMouseHandler {
      */
     void setGrabbed(boolean grabbed);
 
-    /**
-     * Set the new position of the mouse
-     *
-     * @param newX
-     * @param newY
-     */
-    void setNewPosition(int newX, int newY);
-    
+    void setX(int x);
+
+    void setY(int y);
 }

@@ -126,15 +126,6 @@ public abstract class Entity {
      *
      * @param g The graphics context on which to draw
      */
-    public void draw(Graphics graphics) {
-        //sprite.draw((int) x, (int) y, rotationAngle);
-    }
-
-    /**
-     * Draw this entity to the graphics context provided
-     *
-     * @param g The graphics context on which to draw
-     */
     public void draw() {
         sprite.draw((float) x, (float) y, (float) z, rotationAngle);
     }
@@ -234,7 +225,7 @@ public abstract class Entity {
     /**
      * @return Returns the (rectangular) boundary of this entity
      */
-    public Rectangle2D getBounds() {
+    public Rectangle getBounds() {
         me.setBounds((int) x, (int) y, sprite.getWidth(), sprite.getHeight());
         return me;
     }
