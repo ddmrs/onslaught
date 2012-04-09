@@ -10,7 +10,6 @@ public class Life extends Entity {
         super("images/life.png", x, y);
     }
 
-    
     @Override
     public void collidedWith(Entity other) {
         throw new UnsupportedOperationException("Not supported yet.");
@@ -18,7 +17,5 @@ public class Life extends Entity {
 
     @Override
     public void update(long time) {
-        
     }
-
 }

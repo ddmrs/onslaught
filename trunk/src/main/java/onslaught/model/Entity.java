@@ -15,29 +15,53 @@ import onslaught.util.TimingUtility;
  */
 public abstract class Entity {
 
-    /** The current x location of this entity */
+    /**
+     * The current x location of this entity
+     */
     protected double x;
-    /** The current y location of this entity */
+    /**
+     * The current y location of this entity
+     */
     protected double y;
-    /** The current z location of this entity */
+    /**
+     * The current z location of this entity
+     */
     protected double z;
-    /** The sprite that represents this entity */
+    /**
+     * The sprite that represents this entity
+     */
     protected Sprite sprite;
-    /** The current speed of this entity horizontally (pixels/sec) */
+    /**
+     * The current speed of this entity horizontally (pixels/sec)
+     */
     protected double dx;
-    /** The current speed of this entity vertically (pixels/sec) */
+    /**
+     * The current speed of this entity vertically (pixels/sec)
+     */
     protected double dy;
-    /** The angle that the entity has to be rotated **/
+    /**
+     * The angle that the entity has to be rotated *
+     */
     protected double rotationAngle;
-    /** Speed of the entity **/
+    /**
+     * Speed of the entity *
+     */
     protected double speed;
-    /** The rectangle used for this entity during collisions  resolution */
+    /**
+     * The rectangle used for this entity during collisions resolution
+     */
     private Rectangle me = new Rectangle();
-    /** The rectangle used for other entities during collision resolution */
+    /**
+     * The rectangle used for other entities during collision resolution
+     */
     private Rectangle him = new Rectangle();
-    /** Wheter this ent is alive or not */
+    /**
+     * Wheter this ent is alive or not
+     */
     private boolean alive = true;
-    /** the radius for easy collision detectino*/
+    /**
+     * the radius for easy collision detectino
+     */
     protected double radius;
     protected boolean locked = false;
     protected double oldAngle = 0;
@@ -116,8 +140,8 @@ public abstract class Entity {
     }
 
     /**
-     * Do the logic associated with this entity. This method
-     * will be called periodically based on game events
+     * Do the logic associated with this entity. This method will be called
+     * periodically based on game events
      */
     public void doLogic() {
     }
@@ -165,7 +189,9 @@ public abstract class Entity {
     public abstract void collidedWith(Entity other);
 
     /**
-     * Check if this entity is alive or not. Used for deleting the entity out of the list.
+     * Check if this entity is alive or not. Used for deleting the entity out of
+     * the list.
+     *
      * @return True if its alive, false if not.
      */
     public boolean isAlive() {
@@ -181,6 +207,7 @@ public abstract class Entity {
 
     /**
      * Calculates the center of this entity.
+     *
      * @return The center of the entity.
      */
     public Point2D getCenter() {
@@ -189,6 +216,7 @@ public abstract class Entity {
 
     /**
      * Sets the position of this entity.
+     *
      * @param newPosition The new position where the entity should be located.
      */
     public void setPosition(Point2D newPosition) {
@@ -198,6 +226,7 @@ public abstract class Entity {
 
     /**
      * Require that every entity implements its own update routine.
+     *
      * @param time Time elapsed in milliseconds.
      */
     public abstract void update(long time);

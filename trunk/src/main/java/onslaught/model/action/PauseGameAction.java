@@ -15,6 +15,7 @@ public class PauseGameAction implements GameAction {
         this.gameOperations = gameOperations;
     }
 
+    @Override
     public void execute() {
         pause = !pause;
         gameOperations.pauseGame(pause);

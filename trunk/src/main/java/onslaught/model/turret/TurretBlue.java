@@ -1,8 +1,8 @@
 package onslaught.model.turret;
 
 import onslaught.game.GameOperations;
-import onslaught.model.enemy.Enemy;
 import onslaught.model.bullet.BulletBlue;
+import onslaught.model.enemy.Enemy;
 import onslaught.model.enemy.HealthSD;
 
 public class TurretBlue extends Turret {
@@ -32,8 +32,4 @@ public class TurretBlue extends Turret {
         super.update(elapsedTime);
         healthSD.setHealth(getInfo());
     }
-    
-
-    
-    
 }

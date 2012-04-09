@@ -6,7 +6,6 @@ import onslaught.model.enemy.Enemy;
 
 /**
  *
- * @author Jelle Victoor
  */
 public class TurretGreen extends Turret {
     //TODO: All rates upgradable fields are static now

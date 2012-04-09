@@ -17,6 +17,7 @@ public abstract class Bullet extends Entity implements ICollidable {
 
     /**
      * Creates a bullet.
+     *
      * @param ref Thelocation of the image
      * @param position Where the bullet should be.
      * @param speed The speed at wich he is flying
@@ -34,7 +35,8 @@ public abstract class Bullet extends Entity implements ICollidable {
 
     /**
      * Creates a bullet.
-     * @param ref Thelocation of the image
+     *
+     * @param ref The location of the image
      * @param position Where the bullet should be.
      * @param speed The speed at wich he is flying
      * @param zone The zone where he is in.
@@ -49,9 +51,9 @@ public abstract class Bullet extends Entity implements ICollidable {
     }
 
     public void update(long passedTime) {
-        if(checkTarget(target)){
-            calcVelocities(target, passedTime);    
-        }else{
+        if (checkTarget(target)) {
+            calcVelocities(target, passedTime);
+        } else {
             targetDiedEvent();
         }
         super.x += dx;
@@ -65,7 +67,7 @@ public abstract class Bullet extends Entity implements ICollidable {
                 currTarget.takeHit(damage);
                 this.kill();
             }
-        } else{
+        } else {
             hasAlifeTarget = false;
         }
         return hasAlifeTarget;

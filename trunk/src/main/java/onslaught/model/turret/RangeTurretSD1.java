@@ -18,6 +18,7 @@ public class RangeTurretSD1 extends SpriteDecorator {
         this.turret = turret;
     }
 
+    @Override
     public void draw(float x, float y, float z, double angle) {
         // store the current model matrix
         GL11.glPushMatrix();
@@ -40,18 +41,22 @@ public class RangeTurretSD1 extends SpriteDecorator {
         sprite.draw(x, y, z, angle);
     }
 
+    @Override
     public int getWidth() {
         return sprite.getWidth();
     }
 
+    @Override
     public int getHeight() {
         return sprite.getHeight();
     }
 
+    @Override
     public float getWidthPart() {
         return sprite.getWidthPart();
     }
 
+    @Override
     public float getHeightPart() {
         return sprite.getHeightPart();
     }

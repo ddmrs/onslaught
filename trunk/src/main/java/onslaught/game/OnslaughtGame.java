@@ -17,22 +17,20 @@ import onslaught.util.TimingUtility;
  */
 public class OnslaughtGame implements IGameWindowCallback {
     // Core stuff
-    
     private IGameWindow gameWindow;
     private IKeyboardHandler keyboardHandler;
-
+    
     // GameOperator
     private GameOperations gameOps;
     private GameKeyboardActions keybActions;
-
+    
     // Timing
     private long lastFpsTime = TimingUtility.time();
     private long lastLoopTime = TimingUtility.time();
     private int wantedFps = GameProperties.WANTED_FPS;
-    //private long oneSecond = 1000000;
     private long fpsDuration = TimingUtility.getOneSecond() / wantedFps;
     private int fps = 0;
-
+    
     // Screen properties
     private static final String WINDOW_TITLE = "Java Onslaught FTW!";
     public static int SCREEN_WIDTH = 800;
@@ -63,10 +61,12 @@ public class OnslaughtGame implements IGameWindowCallback {
 
     }
 
+    @Override
     public void initialise() {
         gameOps.prepareNewGame();
     }
 
+    @Override
     public void frameRendering() {
         // Regulate the frames + rendering + sleeping:
         long timePassed = 0;
@@ -98,6 +98,7 @@ public class OnslaughtGame implements IGameWindowCallback {
 
     /**
      * Update the fps counter if needed, happens once every second
+     *
      * @param delta The passed time in microseconds
      */
     private void drawFPS(long delta) {
@@ -121,6 +122,7 @@ public class OnslaughtGame implements IGameWindowCallback {
         }
     }
 
+    @Override
     public void windowClosed() {
         System.out.println("Window closed / Game exited.");
     }

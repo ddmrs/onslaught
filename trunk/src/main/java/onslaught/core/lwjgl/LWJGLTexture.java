@@ -3,34 +3,50 @@ package onslaught.core.lwjgl;
 import org.lwjgl.opengl.GL11;
 
 /**
- * A texture to be bound within JOGL. This object is responsible for
- * keeping track of a given OpenGL texture and for calculating the
- * texturing mapping coordinates of the full image.
+ * A texture to be bound within JOGL. This object is responsible for keeping
+ * track of a given OpenGL texture and for calculating the texturing mapping
+ * coordinates of the full image.
  *
- * Since textures need to be powers of 2 the actual texture may be
- * considerably bigged that the source image and hence the texture
- * mapping coordinates need to be adjusted to matchup drawing the
- * sprite against the texture.
+ * Since textures need to be powers of 2 the actual texture may be considerably
+ * bigged that the source image and hence the texture mapping coordinates need
+ * to be adjusted to matchup drawing the sprite against the texture.
  *
  * @author Kevin Glass
  * @author Brian Matzon
  */
 public class LWJGLTexture {
-    /** The GL target type */
+
+    /**
+     * The GL target type
+     */
     private int target;
-    /** The GL texture ID */
+    /**
+     * The GL texture ID
+     */
     private int textureID;
-    /** The height of the image */
+    /**
+     * The height of the image
+     */
     private int height;
-    /** The width of the image */
+    /**
+     * The width of the image
+     */
     private int width;
-    /** The width of the texture */
+    /**
+     * The width of the texture
+     */
     private int texWidth;
-    /** The height of the texture */
+    /**
+     * The height of the texture
+     */
     private int texHeight;
-    /** The ratio of the width of the image to the texture */
+    /**
+     * The ratio of the width of the image to the texture
+     */
     private float widthRatio;
-    /** The ratio of the height of the image to the texture */
+    /**
+     * The ratio of the height of the image to the texture
+     */
     private float heightRatio;
 
     /**
@@ -39,7 +55,7 @@ public class LWJGLTexture {
      * @param target The GL target
      * @param textureID The GL texture ID
      */
-    public LWJGLTexture(int target,int textureID) {
+    public LWJGLTexture(int target, int textureID) {
         this.target = target;
         this.textureID = textureID;
     }
@@ -50,7 +66,7 @@ public class LWJGLTexture {
      * @param gl The GL context to bind to
      */
     public void bind() {
-      GL11.glBindTexture(target, textureID);
+        GL11.glBindTexture(target, textureID);
     }
 
     /**
@@ -130,22 +146,20 @@ public class LWJGLTexture {
     }
 
     /**
-     * Set the height of the texture. This will update the
-     * ratio also.
+     * Set the height of the texture. This will update the ratio also.
      */
     private void setHeight() {
         if (texHeight != 0) {
-            heightRatio = ((float) height)/texHeight;
+            heightRatio = ((float) height) / texHeight;
         }
     }
 
     /**
-     * Set the width of the texture. This will update the
-     * ratio also.
+     * Set the width of the texture. This will update the ratio also.
      */
     private void setWidth() {
         if (texWidth != 0) {
-            widthRatio = ((float) width)/texWidth;
+            widthRatio = ((float) width) / texWidth;
         }
     }
 }

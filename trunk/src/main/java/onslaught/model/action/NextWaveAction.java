@@ -11,14 +11,11 @@ public class NextWaveAction implements GameAction {
     private GameOperations gameOps;
 
     public NextWaveAction(GameOperations gameOps) {
-        setGameOps(gameOps);
+        this.gameOps = gameOps;
     }
 
+    @Override
     public void execute() {
         gameOps.sendNextWave();
-    }
-
-    public void setGameOps(GameOperations gameOps) {
-        this.gameOps = gameOps;
     }
 }

@@ -14,22 +14,27 @@ public class CursorSprite implements Sprite {
     float widthPart = width / 2.0f;
     float heightPart = height / 2.0f;
 
+    @Override
     public int getHeight() {
         return height;
     }
 
+    @Override
     public int getWidth() {
         return width;
     }
 
+    @Override
     public float getWidthPart() {
         return widthPart;
     }
 
+    @Override
     public float getHeightPart() {
         return heightPart;
     }
 
+    @Override
     public void draw(float x, float y, float z, double angle) {
         // store the current model matrix
         GL11.glPushMatrix();
