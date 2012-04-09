@@ -32,14 +32,17 @@ public class LWJGLSprite implements Sprite {
         }
     }
 
+    @Override
     public int getWidth() {
         return this.width;
     }
 
+    @Override
     public int getHeight() {
         return this.height;
     }
 
+    @Override
     public void draw(float x, float y, float z, double angle) {
         // store the current model matrix
         GL11.glPushMatrix();
@@ -80,10 +83,12 @@ public class LWJGLSprite implements Sprite {
         GL11.glPopMatrix();
     }
 
+    @Override
     public float getWidthPart() {
         return widthPart;
     }
 
+    @Override
     public float getHeightPart() {
         return heightPart;
     }

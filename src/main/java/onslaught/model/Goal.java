@@ -6,11 +6,11 @@ import onslaught.util.EntityVisitor;
 
 /**
  * Defines a goal, which enemies want to invade.
+ *
  * @author ethic
  */
 public class Goal extends Entity {
 
-   // private int lifes = 10;
     private Rectangle2D rect;
     private static final String[] URLS = {"images/goal.png"};
     private ArrayList<Life> lifes = new ArrayList<Life>();
@@ -20,30 +20,30 @@ public class Goal extends Entity {
         rect = new Rectangle2D.Double(x, y, 10, 10);
         createLifes();
     }
-    
-    private void createLifes(){
-        lifes.add(new Life(x, y-10));
-        lifes.add(new Life(x, y-20));
+
+    private void createLifes() {
+        lifes.add(new Life(x, y - 10));
+        lifes.add(new Life(x, y - 20));
         lifes.add(new Life(x, y));
-        lifes.add(new Life(x, y+10));
-        lifes.add(new Life(x, y+20));
-        lifes.add(new Life(x+20, y-10));
-        lifes.add(new Life(x+20, y-20));
-        lifes.add(new Life(x+20, y));
-        lifes.add(new Life(x+20, y+10));
-        lifes.add(new Life(x+20, y+20));        
+        lifes.add(new Life(x, y + 10));
+        lifes.add(new Life(x, y + 20));
+        lifes.add(new Life(x + 20, y - 10));
+        lifes.add(new Life(x + 20, y - 20));
+        lifes.add(new Life(x + 20, y));
+        lifes.add(new Life(x + 20, y + 10));
+        lifes.add(new Life(x + 20, y + 20));
     }
 
     /**
      * Try to enter/attack the goal objective
+     *
      * @return true if attempt succeeded.
      */
     public boolean enterGoal(Entity entity) {
         boolean worked = entity.getBounds().intersects(rect);
         if (worked && !lifes.isEmpty()) {
             lifes.remove(0).kill();
-            //lifes--;
-            System.out.println("Lost a live there!");
+            System.out.println("Lost a life there!");
         }
         return worked;
     }
@@ -61,14 +61,6 @@ public class Goal extends Entity {
     }
 
     /**
-     * Change the lifes.
-     * @param lifes
-     */
-//    public void setLifes(int lifes) {
-//        this.lifes = lifes;
-//    }
-
-    /**
      * Retrieve the lifes.
      */
     public int getLifes() {
@@ -78,11 +70,11 @@ public class Goal extends Entity {
     @Override
     public void draw() {
         super.draw();
-        for(Life _life: lifes){
+        for (Life _life : lifes) {
             _life.draw();
         }
     }
-    
+
     void visit(EntityVisitor visitor) {
         visitor.visit(this);
     }

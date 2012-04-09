@@ -1,6 +1,6 @@
 package onslaught.game;
 
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map.Entry;
 import onslaught.core.enums.KeybEnum;
 import onslaught.core.interfaces.IKeyboardHandler;
@@ -15,7 +15,7 @@ public class GameKeyboardActions {
 
     private IKeyboardHandler keyHandler;
     private GameOperations gameOps;
-    private java.util.Map<KeybEnum, GameAction> keyMapping = new HashMap<KeybEnum, GameAction>();
+    private java.util.Map<KeybEnum, GameAction> keyMapping = new EnumMap<KeybEnum, GameAction>(KeybEnum.class);
 
     public GameKeyboardActions(IKeyboardHandler keyHandler, GameOperations gameOps) {
         this.keyHandler = keyHandler;

@@ -2,8 +2,6 @@ package onslaught.model.enemy;
 
 import java.awt.Shape;
 import onslaught.model.*;
-import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics;
 import onslaught.game.Level;
 import onslaught.interfaces.ICollidable;
@@ -12,11 +10,12 @@ import onslaught.util.EntityVisitor;
 
 /**
  * Todo: waypoint detection
+ *
  * @author EthiC
  */
 public abstract class Enemy extends Entity implements ICollidable {
 
-    private int health = 100;
+    private Integer health = 100;
     private int hitpoints;
     private int maxHitpoints;
     private static final double SPEED = 100f;
@@ -27,6 +26,7 @@ public abstract class Enemy extends Entity implements ICollidable {
 
     /**
      * Creates an enemy.
+     *
      * @param ref The url of the image of this enemy
      * @param position Where the enemy should be located on start.
      * @param zone The zone where it is in.
@@ -46,18 +46,21 @@ public abstract class Enemy extends Entity implements ICollidable {
 
     /**
      * Update the enemy's state
+     *
      * @param elapsedTime Time passed by since last update.
      */
+    @Override
     public void update(long elapsedTime) {
         calcVelocities(goal, elapsedTime);
         super.x += dx;
         super.y += dy;
         checkReachedEnd();
-        healthSD.setHealth("" + health);
+        healthSD.setHealth(health.toString());
     }
 
     /**
      * Let this enemy take a hit(from a bullet perhaps?)
+     *
      * @param damage The damage that should be done to this enemy.
      */
     public void takeHit(int damage) {
@@ -89,20 +92,10 @@ public abstract class Enemy extends Entity implements ICollidable {
     @Override
     public void draw(Graphics graphics) {
         super.draw(graphics);
-        
-        if (drawHealth) {
-            healthSD.setHealth(""+health);
-        }
-    }
 
-    /**
-     * Draw the enemies health.
-     * @param graphics
-     */
-    private void drawHealth(Graphics graphics) {
-        graphics.setFont(new Font("verdana", 0, 10));
-        graphics.setColor(new Color(0, 0, 0));
-        graphics.drawString(String.valueOf(health), (int) x, (int) y);
+        if (drawHealth) {
+            healthSD.setHealth("" + health);
+        }
     }
 
     @Override
@@ -110,10 +103,12 @@ public abstract class Enemy extends Entity implements ICollidable {
         // throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    @Override
     public Shape getCollisionBox() {
         return getBounds();
     }
 
+    @Override
     public CollisionBoxType getCollisionBoxType() {
         return CollisionBoxType.RECTANGLE;
     }

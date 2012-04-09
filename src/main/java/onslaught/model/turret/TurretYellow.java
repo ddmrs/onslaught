@@ -6,6 +6,7 @@ import onslaught.model.enemy.Enemy;
 
 /**
  * The taser.
+ *
  * @author Dries
  */
 public class TurretYellow extends Turret {
@@ -15,7 +16,6 @@ public class TurretYellow extends Turret {
     private static final int START_DMG = 10;
     private static final String URL = "images/turret-yellow.png";
     private static final int RATE = 999; //This turret shoots 999 times per second
-
     private static final int RANGE = 50;//TODO: currently pixel dependent
     private boolean start = false;
     private BulletYellow old;

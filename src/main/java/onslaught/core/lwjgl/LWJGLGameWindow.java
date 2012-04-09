@@ -28,6 +28,7 @@ public class LWJGLGameWindow implements IGameWindow {
     public LWJGLGameWindow() {
     }
 
+    @Override
     public void setWindowTitle(String title) {
         this.screenTitle = title;
         if (org.lwjgl.opengl.Display.isCreated()) {
@@ -36,17 +37,18 @@ public class LWJGLGameWindow implements IGameWindow {
 
     }
 
+    @Override
     public void setResolution(int widthPx, int heightPx) {
         this.screenWidth = widthPx;
         this.screenHeight = heightPx;
     }
 
+    @Override
     public void startRendering() {
         try {
             this.setDisplayMode();
             org.lwjgl.opengl.Display.create();
-            //initGL();
-            //resizeWindow(screenWidth, screenHeight);
+
             GL11.glShadeModel(GL11.GL_SMOOTH);
 
             GL11.glClearDepth(1.0);
@@ -58,7 +60,6 @@ public class LWJGLGameWindow implements IGameWindow {
             GL11.glLoadIdentity();
 
             GL11.glOrtho(0, screenWidth, screenHeight, 0, -1, 1);
-            //GL11.glMatrixMode(GL11.GL_MODELVIEW);
             this.textureLoader = new TextureLoader();
 
             if (gameCallback != null) {
@@ -73,49 +74,6 @@ public class LWJGLGameWindow implements IGameWindow {
         }
         //run gameloop
         this.gameLoop();
-    }
-
-    private void resizeWindow(int width, int height) {
-        if (height == 0) {
-            height = 1;
-        }
-        GL11.glViewport(0, 0, width, height);
-        GL11.glMatrixMode(GL11.GL_PROJECTION);
-        GL11.glLoadIdentity();
-        //GLU.gluPerspective(45.0f, width / height, 0.1f, 100.0f);
-        GL11.glMatrixMode(GL11.GL_MODELVIEW);
-        GL11.glLoadIdentity();
-    }
-
-    private void initGL() {
-        GL11.glShadeModel(GL11.GL_SMOOTH); // Enable Smooth Shading
-
-        GL11.glClearColor(red, green, blue, alpha);
-        // Black Background
-        GL11.glClearDepth(1.0); // Depth Buffer Setup
-
-        GL11.glDepthFunc(GL11.GL_LEQUAL);
-        GL11.glEnable(GL11.GL_DEPTH_TEST); // Enables Depth Testing
-//
-//        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-//        GL11.glEnable(GL11.GL_BLEND);
-//        GL11.glEnable(GL11.GL_TEXTURE_2D); // Enable Texture Mapping
-//        //GL11.glEnable(GL11.GL_CULL_FACE);
-//        // The Type Of Depth Testing To Do
-//
-//        GL11.glMatrixMode(GL11.GL_PROJECTION);
-//        // Select The Projection Matrix
-//        GL11.glLoadIdentity(); // Reset The Projection Matrix
-//
-//        // Calculate The Aspect Ratio Of The Window
-//        GLU.gluPerspective(45.0f,
-//                (float) 800 / (float) 600,
-//                0.1f, 100.0f);
-//        GL11.glMatrixMode(GL11.GL_MODELVIEW);
-        // Select The Modelview Matrix
-
-        // Really Nice Perspective Calculations
-        GL11.glHint(GL11.GL_PERSPECTIVE_CORRECTION_HINT, GL11.GL_NICEST);
     }
 
     /**
@@ -133,9 +91,7 @@ public class LWJGLGameWindow implements IGameWindow {
                 "bpp=" + org.lwjgl.opengl.Display.getDisplayMode().getBitsPerPixel()
             };
 
-//            DisplayMode[] displayModes = Display.getAvailableDisplayModes(screenWidth, screenHeight, -1, -1, -1, -1, 60, -1);
-//            Display.setDisplayMode(displayModes, wantedDispMode);
-            Display.setDisplayMode(new DisplayMode(screenWidth,screenHeight));
+            Display.setDisplayMode(new DisplayMode(screenWidth, screenHeight));
 
             System.out.println("fullscreen: " + wantedDispMode[0] + "*" + wantedDispMode[1] + ":" + wantedDispMode[2] + "@" + wantedDispMode[3]);
 
@@ -153,7 +109,6 @@ public class LWJGLGameWindow implements IGameWindow {
      */
     private void gameLoop() {
         while (gameRunning) {
-            //GL11.glClearColor(red, green, blue, alpha);
             //Clear screen
             GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
             GL11.glMatrixMode(GL11.GL_MODELVIEW);
@@ -178,10 +133,12 @@ public class LWJGLGameWindow implements IGameWindow {
         return textureLoader;
     }
 
+    @Override
     public void setGameWindowCallback(IGameWindowCallback callback) {
         this.gameCallback = callback;
     }
 
+    @Override
     public void setBackGroundColour(float red, float green, float blue, float alpha) {
         this.red = red;
         this.green = green;
@@ -189,6 +146,7 @@ public class LWJGLGameWindow implements IGameWindow {
         this.alpha = alpha;
     }
 
+    @Override
     public void stopRendering() {
         gameRunning = false;
     }

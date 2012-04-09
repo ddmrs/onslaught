@@ -4,9 +4,9 @@ import java.awt.Image;
 import java.util.ArrayList;
 
 /**
-    The Animation class manages a series of images (frames) and
-    the amount of time to display each frame.
-*/
+ * The Animation class manages a series of images (frames) and the amount of
+ * time to display each frame.
+ */
 public class Animation {
 
     private ArrayList frames;
@@ -14,14 +14,12 @@ public class Animation {
     private long animTime;
     private long totalDuration;
 
-
     /**
-        Creates a new, empty Animation.
-    */
+     * Creates a new, empty Animation.
+     */
     public Animation() {
         this(new ArrayList(), 0);
     }
-
 
     private Animation(ArrayList frames, long totalDuration) {
         this.frames = frames;
@@ -29,42 +27,36 @@ public class Animation {
         start();
     }
 
-
     /**
-        Creates a duplicate of this animation. The list of frames
-        are shared between the two Animations, but each Animation
-        can be animated independently.
-    */
+     * Creates a duplicate of this animation. The list of frames are shared
+     * between the two Animations, but each Animation can be animated
+     * independently.
+     */
     public Object clone() {
         return new Animation(frames, totalDuration);
     }
 
-
     /**
-        Adds an image to the animation with the specified
-        duration (time to display the image).
-    */
+     * Adds an image to the animation with the specified duration (time to
+     * display the image).
+     */
     public synchronized void addFrame(Image image,
-        long duration)
-    {
+            long duration) {
         totalDuration += duration;
         frames.add(new AnimFrame(image, totalDuration));
     }
 
-
     /**
-        Starts this animation over from the beginning.
-    */
+     * Starts this animation over from the beginning.
+     */
     public synchronized void start() {
         animTime = 0;
         currFrameIndex = 0;
     }
 
-
     /**
-        Updates this animation's current image (frame), if
-        neccesary.
-    */
+     * Updates this animation's current image (frame), if neccesary.
+     */
     public synchronized void update(long elapsedTime) {
         if (frames.size() > 1) {
             animTime += elapsedTime;
@@ -80,25 +72,21 @@ public class Animation {
         }
     }
 
-
     /**
-        Gets this Animation's current image. Returns null if this
-        animation has no images.
-    */
+     * Gets this Animation's current image. Returns null if this animation has
+     * no images.
+     */
     public synchronized Image getImage() {
         if (frames.size() == 0) {
             return null;
-        }
-        else {
+        } else {
             return getFrame(currFrameIndex).image;
         }
     }
 
-
     private AnimFrame getFrame(int i) {
-        return (AnimFrame)frames.get(i);
+        return (AnimFrame) frames.get(i);
     }
-
 
     private class AnimFrame {
 
