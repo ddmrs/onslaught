@@ -25,7 +25,7 @@ public abstract class Bullet extends Entity implements ICollidable {
      */
     public Bullet(String ref, double startX, double startY, double speed, GameOperations gameOps, Enemy target, int damage) {
         super(ref, startX, startY);
-        z = -1;
+        z = 0.5;
         this.speed = speed;
         this.gameOps = gameOps;
         this.target = target;

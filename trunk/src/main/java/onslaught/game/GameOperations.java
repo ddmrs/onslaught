@@ -44,7 +44,8 @@ public class GameOperations {
         stats = new Statistics();
         props = new GameProperties();
         // Add the goal for the enemies
-        entities.add(onslaught.game.Map.getGoal());
+        entities.add(new Map());
+        entities.add(Map.getGoal());
         // Create the mouse
         mousy = new MouseDummy(this);
         mousy.setGrabbed(true);

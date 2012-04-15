@@ -33,8 +33,6 @@ public class OnslaughtGame implements IGameWindowCallback {
     
     // Screen properties
     private static final String WINDOW_TITLE = "Java Onslaught FTW!";
-    public static int SCREEN_WIDTH = 800;
-    public static int SCREEN_HEIGHT = 600;
     private static final float BG_RED = 1.0f;
     private static final float BG_GREEN = 1.0f;
     private static final float BG_BLUE = 1.0f;
@@ -44,7 +42,7 @@ public class OnslaughtGame implements IGameWindowCallback {
         this.gameWindow = ResourceFactory.get().setRenderingType(renderType).getGameWindow();
         this.gameWindow.setGameWindowCallback(this);
         this.gameWindow.setWindowTitle(WINDOW_TITLE);
-        this.gameWindow.setResolution(SCREEN_WIDTH, SCREEN_HEIGHT);
+        this.gameWindow.setResolution(Map.WIDTH, Map.HEIGHT);
         this.gameWindow.setBackGroundColour(BG_RED, BG_GREEN, BG_BLUE, 0.0f);
     }
 

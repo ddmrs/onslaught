@@ -2,6 +2,7 @@ package onslaught.model.bullet;
 
 import onslaught.game.GameOperations;
 import onslaught.game.GameProperties;
+import onslaught.game.Map;
 import onslaught.game.OnslaughtGame;
 import onslaught.model.Entity;
 import onslaught.model.enemy.Enemy;
@@ -20,7 +21,7 @@ public class BulletBlue extends Bullet {
     @Override
     public void update(long currentTime) {
         super.update(currentTime);
-        if (this.x > OnslaughtGame.SCREEN_WIDTH || this.x < 0 || this.y > OnslaughtGame.SCREEN_HEIGHT || this.y < 0) {
+        if (this.x > Map.WIDTH || this.x < 0 || this.y > Map.HEIGHT || this.y < 0) {
             this.kill();
         }
     }   

@@ -8,6 +8,7 @@ public class Life extends Entity {
 
     public Life(double x, double y) {
         super("images/life.png", x, y);
+        z = 4;
     }
 
     @Override

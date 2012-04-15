@@ -1,9 +1,7 @@
 package onslaught.model;
 
-import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 import onslaught.core.ResourceFactory;
 import onslaught.interfaces.Sprite;
 import onslaught.util.MathUtils;
@@ -13,7 +11,7 @@ import onslaught.util.TimingUtility;
  *
  * @author EthiC
  */
-public abstract class Entity {
+ public abstract class Entity {
 
     /**
      * The current x location of this entity
@@ -257,7 +255,7 @@ public abstract class Entity {
         double targetAngle = Math.atan2(yDist, xDist);//RETURNS FRIGGING RAD, HOW CREWL OF YOU!
 
         // Convert rad to degrees
-        targetAngle = (targetAngle * 180 / MathUtils.getPi());
+        targetAngle = (targetAngle * 180 / MathUtils.PI);
 
         // Calc time interval to calculate maxAngle to be rotated for this update
         double diff = (double) elapsedTime / TimingUtility.getOneSecond();
@@ -301,7 +299,7 @@ public abstract class Entity {
 
     protected void calcVelocities(Entity target, long passedTime) {
         calcAngleToTarget(target, this, passedTime, 720);
-        double angleRad = rotationAngle / 180 * MathUtils.getPi();
+        double angleRad = rotationAngle / 180 * MathUtils.PI;
         // 1000 10 ms
         double speedStep = TimingUtility.calcTimeFactor(passedTime) * speed;
         // Update velocities

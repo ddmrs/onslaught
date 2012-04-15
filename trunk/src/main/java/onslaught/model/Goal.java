@@ -1,5 +1,6 @@
 package onslaught.model;
 
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import onslaught.util.EntityVisitor;
@@ -15,10 +16,14 @@ public class Goal extends Entity {
     private static final String[] URLS = {"images/goal.png"};
     private ArrayList<Life> lifes = new ArrayList<Life>();
 
+    public Goal(Point2D position) {
+        this(position.getX(), position.getY());
+    }
     public Goal(double x, double y) {
         super(URLS[0], x, y);
         rect = new Rectangle2D.Double(x, y, 10, 10);
         createLifes();
+        z=1;
     }
 
     private void createLifes() {
