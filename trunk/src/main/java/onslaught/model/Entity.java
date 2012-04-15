@@ -11,7 +11,7 @@ import onslaught.util.TimingUtility;
  *
  * @author EthiC
  */
- public abstract class Entity {
+public abstract class Entity {
 
     /**
      * The current x location of this entity

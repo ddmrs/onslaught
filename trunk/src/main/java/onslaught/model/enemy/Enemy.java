@@ -2,7 +2,6 @@ package onslaught.model.enemy;
 
 import java.awt.Shape;
 import onslaught.model.*;
-import java.awt.Graphics;
 import onslaught.game.Level;
 import onslaught.game.Map;
 import onslaught.interfaces.ICollidable;
@@ -22,8 +21,8 @@ public abstract class Enemy extends Entity implements ICollidable {
     private Goal goal;
     private Level level;
     private HealthSD healthSD;
-    int mapCount = 0;
-    MapHelper current = Map.WAY_POINTS[mapCount];
+    private int mapCount = 0;
+    private MapHelper current = Map.getCurrent().getWayPoints().get(0);
 
     /**
      * Creates an enemy.
@@ -44,8 +43,8 @@ public abstract class Enemy extends Entity implements ICollidable {
         healthSD = new HealthSD(this.sprite);
         this.sprite = healthSD;
     }
-    
-    private void calcVelo(long passedTime){
+
+    private void calcVelo(long passedTime) {
         double angleRad = MathUtils.calcRadAngle(current.getStartPoint(), current.getTargetPoint());
         // 1000 10 ms
         double speedStep = TimingUtility.calcTimeFactor(passedTime) * speed;
@@ -96,8 +95,8 @@ public abstract class Enemy extends Entity implements ICollidable {
     private void checkReachedEnd() {
         if (goal.enterGoal(this)) {
             super.kill();
-        }else if(mapCount+1 < Map.WAY_POINTS.length && current.reachedEnd(this, Map.WAY_POINTS[mapCount+1])){
-            current = Map.WAY_POINTS[++mapCount];
+        } else if (mapCount + 1 < Map.getCurrent().getWayPoints().size() && current.reachedEnd(this, Map.getCurrent().getWayPoints().get(mapCount + 1))) {
+            current = Map.getCurrent().getWayPoints().get(++mapCount);
         }
     }
 
