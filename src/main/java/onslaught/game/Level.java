@@ -17,14 +17,14 @@ public class Level {
     public Level(int number) {
         this.number = number;
         enemies = new ArrayList<Enemy>(GameProperties.enemiesPerLevel);
-        double x = Map.getStartPoint().getX();
+        double x = Map.getCurrent().getStartPoint().getX();
         for (int i = 0; i < GameProperties.enemiesPerLevel; i++) {
-            enemy(x - (i * 20), Map.getStartPoint().getY());
+            enemy(x - (i * 20), Map.getCurrent().getStartPoint().getY());
         }
     }
 
     private void enemy(double x, double y) {
-        Enemy enemy = new EnemyPrinter(x, y, (100 * number / 10), Map.getGoal());
+        Enemy enemy = new EnemyPrinter(x, y, (100 * number / 10), Map.getCurrent().getGoal());
         enemy.setLevel(this);
         enemies.add(enemy);
     }

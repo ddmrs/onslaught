@@ -19,11 +19,12 @@ public class Goal extends Entity {
     public Goal(Point2D position) {
         this(position.getX(), position.getY());
     }
+
     public Goal(double x, double y) {
         super(URLS[0], x, y);
         rect = new Rectangle2D.Double(x, y, 10, 10);
         createLifes();
-        z=1;
+        z = 0;
     }
 
     private void createLifes() {
@@ -68,16 +69,17 @@ public class Goal extends Entity {
     /**
      * Retrieve the lifes.
      */
-    public int getLifes() {
+    public int getLifesLeft() {
         return lifes.size();
     }
 
     @Override
     public void draw() {
         super.draw();
-        for (Life _life : lifes) {
-            _life.draw();
-        }
+    }
+
+    public ArrayList<Life> getLifes() {
+        return lifes;
     }
 
     void visit(EntityVisitor visitor) {

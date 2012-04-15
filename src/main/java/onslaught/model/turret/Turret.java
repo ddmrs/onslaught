@@ -55,7 +55,10 @@ public abstract class Turret extends Entity implements IMovable, ICollidable {
 
     public boolean isPlaceable(int newX, int newY) {
         Rectangle newBounds = new Rectangle(newX, newY, getSprite().getWidth(), getSprite().getHeight());
-        if (Map.getGoal().getBounds().intersects(newBounds)) {
+        if (Map.getCurrent().getGoal().getBounds().intersects(newBounds)) {
+            return false;
+        }
+        if (newX < 0 || newY < 0 || newX > Map.WIDTH || newY > Map.HEIGHT) {
             return false;
         }
         for (Turret other : gameOps.getTurrets()) {

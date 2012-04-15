@@ -67,6 +67,6 @@ public class MapHelper {
     }
 
     public boolean reachedEnd(Entity entity, MapHelper next) {
-        return (Math.abs(entity.getCenter().distance(next.startPoint)) < halfWidth);
+        return (Math.abs(entity.getCenter().distance(next.startPoint)) < entity.getBounds().getWidth() / 2);
     }
 }

@@ -6,6 +6,7 @@ import java.util.List;
 import onslaught.gui.MouseDummy;
 import onslaught.interfaces.ISelectable;
 import onslaught.model.Entity;
+import onslaught.model.Goal;
 import onslaught.model.enemy.Enemy;
 import onslaught.model.enums.TurretEnum;
 import onslaught.model.turret.Turret;
@@ -44,8 +45,10 @@ public class GameOperations {
         stats = new Statistics();
         props = new GameProperties();
         // Add the goal for the enemies
-        entities.add(new Map());
-        entities.add(Map.getGoal());
+        entities.add(Map.getCurrent());
+        Goal goal = Map.getCurrent().getGoal();
+        entities.addAll(goal.getLifes());
+        entities.add(goal);
         // Create the mouse
         mousy = new MouseDummy(this);
         mousy.setGrabbed(true);
@@ -203,7 +206,7 @@ public class GameOperations {
             sendNextWave();
             totalTimepassed = 0;
         }
-        if (!onslaught.game.Map.getGoal().isAlive()) {
+        if (!Map.getCurrent().getGoal().isAlive()) {
             gameRunning = false;
         }
     }
