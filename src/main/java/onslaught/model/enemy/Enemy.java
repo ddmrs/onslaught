@@ -4,9 +4,9 @@ import java.awt.Shape;
 import onslaught.model.*;
 import java.awt.Graphics;
 import onslaught.game.Level;
+import onslaught.game.Map;
 import onslaught.interfaces.ICollidable;
-import onslaught.util.CollisionBoxType;
-import onslaught.util.EntityVisitor;
+import onslaught.util.*;
 
 /**
  * Todo: waypoint detection
@@ -22,6 +22,8 @@ public abstract class Enemy extends Entity implements ICollidable {
     private Goal goal;
     private Level level;
     private HealthSD healthSD;
+    int mapCount = 0;
+    MapHelper current = Map.WAY_POINTS[mapCount];
 
     /**
      * Creates an enemy.
@@ -36,11 +38,20 @@ public abstract class Enemy extends Entity implements ICollidable {
         hitpoints = maxHitpoints;
         speed = SPEED;
         calcDispHealth();
-        calcVelocities(goal, 1);
+        calcVelo(1L);
         this.goal = goal;
-        z = -1;
+        z = 1;
         healthSD = new HealthSD(this.sprite);
         this.sprite = healthSD;
+    }
+    
+    private void calcVelo(long passedTime){
+        double angleRad = MathUtils.calcRadAngle(current.getStartPoint(), current.getTargetPoint());
+        // 1000 10 ms
+        double speedStep = TimingUtility.calcTimeFactor(passedTime) * speed;
+        // Update velocities
+        dx = Math.cos(angleRad) * speedStep;
+        dy = Math.sin(angleRad) * speedStep;
     }
 
     /**
@@ -50,7 +61,7 @@ public abstract class Enemy extends Entity implements ICollidable {
      */
     @Override
     public void update(long elapsedTime) {
-        calcVelocities(goal, elapsedTime);
+        calcVelo(elapsedTime);
         super.x += dx;
         super.y += dy;
         checkReachedEnd();
@@ -85,6 +96,8 @@ public abstract class Enemy extends Entity implements ICollidable {
     private void checkReachedEnd() {
         if (goal.enterGoal(this)) {
             super.kill();
+        }else if(mapCount+1 < Map.WAY_POINTS.length && current.reachedEnd(this, Map.WAY_POINTS[mapCount+1])){
+            current = Map.WAY_POINTS[++mapCount];
         }
     }
 

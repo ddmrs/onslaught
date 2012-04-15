@@ -2,6 +2,7 @@ package onslaught.handlers;
 
 import onslaught.core.enums.MouseEnum;
 import onslaught.core.interfaces.IMouseHandler;
+import onslaught.game.Map;
 import onslaught.game.OnslaughtGame;
 import org.lwjgl.input.Mouse;
 
@@ -31,7 +32,7 @@ public class LwjglMouseHandler implements IMouseHandler {
      * {@inheritDoc}
      */
     public int getY() {
-        return OnslaughtGame.SCREEN_HEIGHT - Mouse.getY();
+        return Map.HEIGHT - Mouse.getY();
     }
 
     /**
@@ -59,7 +60,7 @@ public class LwjglMouseHandler implements IMouseHandler {
      * {@inheritDoc}
      */
     public void setNewPosition(int newX, int newY) {
-        Mouse.setCursorPosition(newX, OnslaughtGame.SCREEN_HEIGHT - newY);
+        Mouse.setCursorPosition(newX, Map.HEIGHT - newY);
     }
 
     @Override
@@ -69,6 +70,6 @@ public class LwjglMouseHandler implements IMouseHandler {
 
     @Override
     public void setY(int y) {
-        Mouse.setCursorPosition(Mouse.getX(), OnslaughtGame.SCREEN_HEIGHT - y);
+        Mouse.setCursorPosition(Mouse.getX(), Map.HEIGHT - y);
     }
 }

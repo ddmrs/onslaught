@@ -6,6 +6,7 @@ package onslaught.model.bullet;
 
 import onslaught.game.GameOperations;
 import onslaught.game.GameProperties;
+import onslaught.game.Map;
 import onslaught.game.OnslaughtGame;
 import onslaught.model.Entity;
 import onslaught.model.enemy.Enemy;
@@ -33,7 +34,7 @@ public class BulletRed extends Bullet {
     public void update(long currentTime) {
         if (target != null) {
             super.update(currentTime);
-            if (this.x > OnslaughtGame.SCREEN_WIDTH || this.x < 0 || this.y > OnslaughtGame.SCREEN_HEIGHT || this.y < 0) {
+            if (this.x > Map.WIDTH || this.x < 0 || this.y > Map.HEIGHT || this.y < 0) {
                 this.kill();
             }
         }
@@ -50,7 +51,7 @@ public class BulletRed extends Bullet {
         dx = Math.cos(targetAngle) * speedStep;
         dy = Math.sin(targetAngle) * speedStep;
 
-        rotationAngle = targetAngle * (180 / MathUtils.getPi());
+        rotationAngle = targetAngle * (180 / MathUtils.PI);
         rotationAngle -= START_ANGLE;
     }
 

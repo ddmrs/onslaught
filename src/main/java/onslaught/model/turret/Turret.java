@@ -38,6 +38,7 @@ public abstract class Turret extends Entity implements IMovable, ICollidable {
 
     public Turret(String ref, double startX, double startY, int rate, int range, GameOperations gameOps, int damage) {
         super(ref, startX, startY);
+        z = 1;
         turretSprite = sprite;
         this.rate = rate;
         radius = range;
