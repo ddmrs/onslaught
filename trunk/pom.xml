@@ -77,12 +77,12 @@
         </plugins>
     </build>
 	
-    <repositories>
+    <!--repositories>
         <repository>
             <id>slick-repo</id>
             <url>http://slick.cokeandcode.com/mavenrepo</url>
         </repository>
-    </repositories>
+    </repositories-->
 
     <dependencies>
         <dependency>
@@ -91,9 +91,9 @@
             <version>2.8.3</version>
         </dependency>
         <dependency>
-            <groupId>slick</groupId>
-            <artifactId>slick</artifactId>
-            <version>274</version>
+            <groupId>org.slick2d</groupId>
+            <artifactId>slick2d-core</artifactId>
+            <version>1.0.1</version>
             <exclusions>
                 <exclusion>
                     <artifactId>lwjgl</artifactId>
